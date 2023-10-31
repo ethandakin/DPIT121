@@ -1,0 +1,40 @@
+--[=[
+	Helper functions for maids and promises
+
+	@class PromiseMaidUtils
+]=]
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SharedPackages = ReplicatedStorage.SharedPackages
+
+local Maid = require(SharedPackages.Maid.Maid)
+local Promise = require(SharedPackages.Promise.Promise)
+
+local PromiseMaidUtils = {}
+
+--[=[
+	Calls the callback with a maid for the lifetime of the promise.
+
+	@param promise Promise
+	@param callback function
+]=]
+function PromiseMaidUtils.whilePromise(promise, callback)
+	assert(Promise.isPromise(promise), "Bad promise")
+	assert(type(callback) == "function", "Bad callback")
+
+	local maid = Maid.new()
+
+	if not promise:IsPending() then
+		return maid
+	end
+
+	promise:Finally(function()
+		maid:DoCleaning()
+	end)
+
+	callback(maid)
+
+	return maid
+end
+
+return PromiseMaidUtils
