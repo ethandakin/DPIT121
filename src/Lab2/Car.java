@@ -14,6 +14,42 @@ public class Car {
         this.price = price;
     }
 
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setType(CarType type) {
+        this.type = type;
+    }
+
+    public void setManufacturingYear(int manufacturingYear) {
+        this.manufacturingYear = manufacturingYear;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getModel() {
+        return this.model;
+    }
+
+    public CarType getType() {
+        return this.type;
+    }
+
+    public int getManufacturingYear() {
+        return this.manufacturingYear;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void priceRise(double rise) {
+        this.price += rise;
+    }
+
     public String toString() {
         return String.format("%s %d %s ($%.2f)", this.model, this.manufacturingYear, this.type, this.price);
     }

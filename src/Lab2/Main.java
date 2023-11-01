@@ -1,4 +1,4 @@
-package Lab1;
+package Lab2;
 
 import java.util.ArrayList;
 
@@ -54,24 +54,5 @@ public class Main {
         policies.add(thirdPartyPolicy2);
         policies.add(comprehensivePolicy2);
         policies.add(comprehensivePolicy3);
-
-        System.out.print("PRINT METHOD: \n");
-
-        for (InsurancePolicy policy: policies) {
-            policy.print();
-            System.out.println("\n");
-        }
-
-        System.out.print("toString METHOD: \n");
-
-        for (InsurancePolicy policy: policies) {
-            System.out.println(policy + "\n");
-        }
-
-        System.out.print("PREMIUM PAYMENTS: \n");
-
-        for (InsurancePolicy policy: policies) {
-            System.out.printf("%d: $%.2f\n", policy.id, policy.calcPayment(flatRate));
-        }
     }
 }
