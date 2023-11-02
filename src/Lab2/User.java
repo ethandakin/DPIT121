@@ -14,6 +14,14 @@ public class User {
         this.policies = new ArrayList<InsurancePolicy>();
     }
 
+    public void setCity(String city) {
+        this.address.setCity(city);
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public boolean addPolicy(InsurancePolicy policy) {
         if (findPolicy(policy.id) == null) {
             this.policies.add(policy);
@@ -42,7 +50,12 @@ public class User {
     }
 
     public void printPolicies(int flatRate) {
-
+        InsurancePolicy.printPolicies(this.policies);
+        
+        // Print out title
+        System.out.print("\nTOTAL PREMIUM PAYMENTS: \n");
+        // Print out the total, formatted to 2 decimal places.
+        System.out.printf("$%.2f", calcTotalPremiums(flatRate));
     }
 
     public double calcTotalPremiums(int flatRate) {

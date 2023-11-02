@@ -6,6 +6,13 @@ public class Address {
     protected String suburb;
     protected String city;
 
+    public Address(int streetNum, String street, String suburb, String city) {
+        this.streetNum = streetNum;
+        this.street = street;
+        this.suburb = suburb;
+        this.city = city;
+    }
+
     // Mutators
     public int getStreetNum() {
         return this.streetNum;

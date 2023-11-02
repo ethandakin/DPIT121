@@ -102,7 +102,7 @@ public abstract class InsurancePolicy {
         ArrayList<InsurancePolicy> filteredPolicies = new ArrayList<InsurancePolicy>();
         
         for (InsurancePolicy policy: policies) {
-            if (policy.getCar().getModel() == carModel) {
+            if (policy.getCar().getModel().equals(carModel)) {
                 filteredPolicies.add(policy);
             }
         }

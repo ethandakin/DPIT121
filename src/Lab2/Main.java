@@ -1,13 +1,14 @@
 package Lab2;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 // Ethan Dakin
 // 8209194
 
 public class Main {
     // Attribute for flatRate
-    public static final double flatRate = 100;
+    public static final int flatRate = 100;
 
     public static void main(String[] args) {
         // Create all the policies, with attributes described in the constructor.
@@ -54,15 +55,59 @@ public class Main {
                 2
         );
 
-        // Create ArrayList for all the InsurancePolicy objects.
-        ArrayList<InsurancePolicy> policies = new ArrayList<>();
-        // Add all the policies into the ArrayList policies
-        policies.add(thirdPartyPolicy1);
-        policies.add(comprehensivePolicy1);
-        policies.add(thirdPartyPolicy2);
-        policies.add(comprehensivePolicy2);
-        policies.add(comprehensivePolicy3);
+        User user = new User("Ethan", 1, new Address(18, "Green St", "Strathfield", "Sydney"));
 
-        InsurancePolicy.printPolicies(policies);
+        // Add all the policies into the ArrayList policies
+        user.addPolicy(thirdPartyPolicy1);
+        user.addPolicy(comprehensivePolicy1);
+        user.addPolicy(thirdPartyPolicy2);
+        user.addPolicy(comprehensivePolicy2);
+        user.addPolicy(comprehensivePolicy3);
+
+        user.print();
+        
+        System.out.print(user);
+
+        InsurancePolicy policyFound = user.findPolicy(2);
+        InsurancePolicy policyNotFound = user.findPolicy(7);
+
+        if (policyNotFound == null) {
+                System.out.print("Policy has not been found");
+        }
+
+        System.out.print(policyFound);
+        policyFound.carPriceRise(0.1);
+        System.out.print(policyFound);
+
+        policyFound.setPolicyHolderName("Robert");
+        policyFound.getCar().setModel("Toyota Camry");
+        policyFound.getCar().setManufacturingYear(2018);
+
+        user.setCity("Wollongong");
+
+        Scanner scan = new Scanner(System.in);
+        System.out.println("\nEnter new address information: ");
+        System.out.print("Number: ");
+        int number = Integer.parseInt(scan.nextLine());
+
+        System.out.print("Street: ");
+        String street = scan.nextLine();
+
+        System.out.print("Suburb: ");
+        String suburb = scan.nextLine();
+
+        System.out.print("City: ");
+        String city = scan.nextLine();
+
+        user.setAddress(new Address(number, street, suburb, city));
+
+        System.out.println(user.calcTotalPremiums(flatRate));
+        user.carPriceRiseAll(0.1);
+        System.out.println(user.calcTotalPremiums(flatRate));
+
+        System.out.print("\nPlease enter a car model: ");
+        String carModel = scan.nextLine();
+
+        InsurancePolicy.printPolicies(user.filterByCarModel(carModel));
     }
 }
