@@ -1,11 +1,16 @@
 package Lab2;
 
+// Ethan Dakin
+// 8209194
+
 public class Address {
+    // Protected attributes for address
     protected int streetNum;
     protected String street;
     protected String suburb;
     protected String city;
 
+    // Constructor
     public Address(int streetNum, String street, String suburb, String city) {
         this.streetNum = streetNum;
         this.street = street;

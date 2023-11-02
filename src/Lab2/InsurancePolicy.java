@@ -13,32 +13,33 @@ public abstract class InsurancePolicy {
     protected MyDate expiryDate;
 
     // Constructor
-    public InsurancePolicy(String policyHolderName, int id, Car car, int numberOfClaims) {
+    public InsurancePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate) {
         this.policyHolderName = policyHolderName;
         this.id = id;
         this.car = car;
         this.numberOfClaims = numberOfClaims;
+        this.expiryDate = expiryDate;
     }
 
     // Mutators
     public String getPolicyHolderName() {
-        return this.policyHolderName;
+        return policyHolderName;
     }
 
     public int getId() {
-        return this.id;
+        return id;
     }
 
     public Car getCar() {
-        return this.car;
+        return car;
     }
 
     public int getNumberOfClaims() {
-        return this.numberOfClaims;
+        return numberOfClaims;
     }
 
     public MyDate getExpiryDate() {
-        return this.expiryDate;
+        return expiryDate;
     }
 
     public void setPolicyHolderName(String policyHolderName) {
@@ -63,9 +64,10 @@ public abstract class InsurancePolicy {
 
     // Return formatted attributes
     public String toString() {
-        return String.format("ID: %d\nHolder: %s\n%s\nNumber of claims: %d", this.id, this.policyHolderName, this.car, this.numberOfClaims);
+        return String.format("ID: %d\nHolder: %s\n%s\nNumber of claims: %d", id, policyHolderName, car, numberOfClaims);
     }
     
+    // Print policies method
     public static void printPolicies(ArrayList<InsurancePolicy> policies) {
         // Print out title
         System.out.print("Policies: \n");
@@ -73,7 +75,7 @@ public abstract class InsurancePolicy {
         // Loop through policies and call print method on them all.
         for (InsurancePolicy policy: policies) {
             policy.print();
-            System.out.println("\n");
+            System.out.print("\n");
         }
     }
 
@@ -82,14 +84,14 @@ public abstract class InsurancePolicy {
 
         // Loop through all policies and add the premium payment to total
         for (InsurancePolicy policy: policies) {
-            total += policy.calcPayment(flatRate);;
+            total += policy.calcPayment(flatRate);
         }
 
         return total;
     }
 
     public void carPriceRise(double risePercent) {
-        this.getCar().priceRise(risePercent);
+        getCar().priceRise(risePercent);
     }
 
     public static void carPriceRiseAll(ArrayList<InsurancePolicy> policies, double risePercent) {
@@ -115,8 +117,8 @@ public abstract class InsurancePolicy {
 
     // Print out formatted values, with car print in the middle.
     public void print() {
-        System.out.printf("ID: %d\nHolder: %s\n", this.id, this.policyHolderName);
-        this.car.print();
-        System.out.printf("\nNumber of claims: %d", this.numberOfClaims);
+        System.out.printf("ID: %d\nHolder: %s\n", id, policyHolderName);
+        getCar().print();
+        System.out.printf("\nNumber of claims: %d", numberOfClaims);
     }
 }

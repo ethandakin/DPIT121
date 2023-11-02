@@ -1,6 +1,4 @@
 package Lab2;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 // Ethan Dakin
@@ -109,5 +107,10 @@ public class Main {
         String carModel = scan.nextLine();
 
         InsurancePolicy.printPolicies(user.filterByCarModel(carModel));
+        scan.close();
+
+
+
+        
     }
 }
