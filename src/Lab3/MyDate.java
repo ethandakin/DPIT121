@@ -42,15 +42,6 @@ public class MyDate {
         this.month = day;
     }
 
-    // Check if date is expired
-    public boolean isExpired(MyDate expiryDate) {
-        if (year > expiryDate.year || (year <= expiryDate.year && month > expiryDate.month) || (year <= expiryDate.year && month <= expiryDate.month && day >= expiryDate.day)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     // toString method
     @Override
     public String toString() {

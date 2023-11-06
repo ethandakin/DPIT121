@@ -46,7 +46,7 @@ public abstract class InsurancePolicy {
     public void setPolicyHolderName(String policyHolderName) {
         this.policyHolderName = policyHolderName;
     }
-
+    
     public void setID(int id) {
         this.id = id;
     }
@@ -63,31 +63,29 @@ public abstract class InsurancePolicy {
         this.expiryDate = expiryDate;
     }
 
+    // Price rise for car class
+    public void carPriceRise(double risePercent) {
+        double rise = getCar().getPrice() * risePercent;
+        getCar().priceRise(rise);
+    }
+
+    // Abstract method for subclasses
+    public abstract double calcPayment(double flatRate);
+
     // Return formatted attributes
+    @Override
     public String toString() {
         return String.format("PolicyID: %d\nHolder: %s\n%s\nNumber of claims: %d\nExpiry date: %s", id, policyHolderName, car, numberOfClaims, expiryDate);
     }
-    
-    // Print policies method
-    public static void printPolicies(ArrayList<InsurancePolicy> policies) {
-        // Loop through policies and call print method on them all.
-        for (InsurancePolicy policy: policies) {
-            policy.print();
-            System.out.print("\n");
-        }
+
+    // Print out formatted values, with car print in the middle.
+    public void print() {
+        System.out.printf("PolicyID: %d\nHolder: %s\n", id, policyHolderName);
+        getCar().print();
+        System.out.printf("\nNumber of claims: %d\nExpiry date: %s", numberOfClaims, expiryDate);
     }
 
-    // Print total premium payment
-    public static void printTotalPayments(ArrayList<InsurancePolicy> policies, int flatRate) {
-        // Print out the total, formatted to 2 decimal places.
-        System.out.printf("$%.2f", calcTotalPayments(policies, flatRate));
-    }
-
-    // Price rise for car class
-    public void carPriceRise(double risePercent) {
-        getCar().priceRise(risePercent);
-    }
-
+    // Static methods
     // Calc all payments static method
     public static double calcTotalPayments(ArrayList<InsurancePolicy> policies, int flatRate) {
         double total = 0;
@@ -121,27 +119,27 @@ public abstract class InsurancePolicy {
         return filteredPolicies;
     }
 
-    // Filter by expiry date
-    public static ArrayList<InsurancePolicy> filterByExpiryDate(ArrayList<InsurancePolicy> policies, MyDate date) {
-        ArrayList<InsurancePolicy> filteredPolicies = new ArrayList<InsurancePolicy>();
-        
+    // Print policies method
+    public static void printPolicies(ArrayList<InsurancePolicy> policies) {
+        // Loop through policies and call print method on them all.
         for (InsurancePolicy policy: policies) {
-            // If the policy date is expired, add it to the ArrayList.
-            if (policy.getExpiryDate().isExpired(date)) {
-                filteredPolicies.add(policy);
-            }
+            policy.print();
+            System.out.print("\n");
         }
-
-        return filteredPolicies;
     }
 
-    // Abstract method for subclasses
-    public abstract double calcPayment(double flatRate);
+    public static void printPoliciesAndPremium(ArrayList<InsurancePolicy> policies, int flatRate) {
+        // Loop through policies and call print method on them all.
+        for (InsurancePolicy policy: policies) {
+            policy.print();
+            System.out.printf("Premium payment: $%.2f\n", policy.calcPayment(flatRate));
+            System.out.print("\n");
+        }
+    }
 
-    // Print out formatted values, with car print in the middle.
-    public void print() {
-        System.out.printf("PolicyID: %d\nHolder: %s\n", id, policyHolderName);
-        getCar().print();
-        System.out.printf("\nNumber of claims: %d\nExpiry date: %s", numberOfClaims, expiryDate);
+    // Print total premium payment
+    public static void printTotalPayments(ArrayList<InsurancePolicy> policies, int flatRate) {
+        // Print out the total, formatted to 2 decimal places.
+        System.out.printf("$%.2f", calcTotalPayments(policies, flatRate));
     }
 }

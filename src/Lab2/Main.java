@@ -15,6 +15,7 @@ public class Main {
                 1,
                 new Car("Subaru", CarType.SED, 2011, 9500),
                 2,
+                new MyDate(2025, 11, 3),
                 "Got flattened by an 18 wheeler"
         );
 
@@ -23,6 +24,7 @@ public class Main {
                 2,
                 new Car("Toyota", CarType.HATCH, 2016, 12000),
                 3,
+                new MyDate(2023, 1, 3),
                 37,
                 6
         );
@@ -32,6 +34,7 @@ public class Main {
                 3,
                 new Car("Honda", CarType.SUV, 2014, 10000),
                 8,
+                new MyDate(2019, 7, 25),
                 "Boom"
         );
 
@@ -40,6 +43,7 @@ public class Main {
                 4,
                 new Car("Tesla", CarType.LUX, 2022, 57000),
                 6,
+                new MyDate(2031, 8, 16),
                 56,
                 14
         );
@@ -49,6 +53,7 @@ public class Main {
                 5,
                 new Car("Tractor", CarType.etc, 1998, 20000),
                 1,
+                new MyDate(2024, 4, 19),
                 8,
                 2
         );
@@ -125,11 +130,11 @@ public class Main {
         System.out.print(user);
 
         // Print the total premium payments for all policies that the user owns
-        System.out.printf("Premium Payments: $%.1f\n", user.calcTotalPremiums(flatRate));
+        System.out.printf("Total premium payments: $%.1f\n", user.calcTotalPremiums(flatRate));
         // Rise the price of all cars the user owns by 10%
         user.carPriceRiseAll(0.1);
         // Print the total premium payments again to see the difference.
-        System.out.printf("Premium Payments: $%.1f\n\n", user.calcTotalPremiums(flatRate));
+        System.out.printf("Total premium payments: $%.1f\n\n", user.calcTotalPremiums(flatRate));
 
         // Print out information for scanner
         System.out.print("Please enter a car model: ");

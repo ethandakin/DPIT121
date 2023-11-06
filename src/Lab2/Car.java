@@ -57,10 +57,11 @@ public class Car {
 
     // Price rise method, increases the price double by (price * (rise + 1))
     public void priceRise(double rise) {
-        this.setPrice(this.price * (rise + 1));
+        setPrice(rise += getPrice());
     }
 
     // toString method
+    @Override
     public String toString() {
         return String.format("%s %d %s ($%.2f)", this.model, this.manufacturingYear, this.type, this.price);
     }

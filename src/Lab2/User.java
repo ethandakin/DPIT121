@@ -34,7 +34,6 @@ public class User {
         this.address = address;
     }
 
-
     // Add policy to the policies ArrayList if the ID is valid.
     public boolean addPolicy(InsurancePolicy policy) {
         if (findPolicy(policy.id) == null) {
@@ -56,29 +55,6 @@ public class User {
         return null;
     }
 
-    // Print the user, and the user's policies
-    public void print() {
-        System.out.printf("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", userID, name, getAddress());
-        InsurancePolicy.printPolicies(policies);
-    }
-
-    // Return the user information and the user's policies as a string.
-    public String toString() {
-        String policiesString = "";
-        for (InsurancePolicy policy : policies) {
-            policiesString += String.format("%s\n", policy);
-        }
-        return String.format("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", userID, name, getAddress()) + policiesString;
-    }
-
-    // Print all the policies the user owns
-    public void printPolicies(int flatRate) {
-        // Call the static method in InsurancePolicy class
-        System.out.print("Policies: ");
-        InsurancePolicy.printPolicies(this.policies);
-        InsurancePolicy.printTotalPayments(policies, flatRate);
-    }
-
     // Calculate the total premiums
     public double calcTotalPremiums(int flatRate) {
         return InsurancePolicy.calcTotalPayments(this.policies, flatRate);
@@ -92,5 +68,26 @@ public class User {
     // Filter the policies by a certain car model.
     public ArrayList<InsurancePolicy> filterByCarModel(String carModel) {
         return InsurancePolicy.filterByCarModel(this.policies, carModel);
+    }
+
+    // Print the user, and the user's policies
+    public void print() {
+        System.out.printf("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", userID, name, getAddress());
+        InsurancePolicy.printPolicies(policies);
+    }
+
+    // Return the user information and the user's policies as a string.
+    @Override
+    public String toString() {
+        String policiesString = "";
+        for (InsurancePolicy policy : policies) {
+            policiesString += String.format("%s\n", policy);
+        }
+        return String.format("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", userID, name, getAddress()) + policiesString;
+    }
+
+    // Print all the policies the user owns
+    public void printPolicies(int flatRate) {
+        InsurancePolicy.printPoliciesAndPremium(policies, flatRate);
     }
 }

@@ -23,7 +23,7 @@ public class ComprehensivePolicy extends InsurancePolicy{
             flatRate += ((30 - driverAge) * 50);
         }
 
-        return super.car.price / 50 + numberOfClaims * 200 + flatRate;
+        return super.getCar().getPrice() / 50 + numberOfClaims * 200 + flatRate;
     }
 
     // toString method

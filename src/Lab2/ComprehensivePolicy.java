@@ -9,8 +9,8 @@ public class ComprehensivePolicy extends InsurancePolicy{
     protected int level;
 
     // Constructor
-    public ComprehensivePolicy(String policyHolderName, int id, Car car, int numberOfClaims, int driverAge, int level) {
-        super(policyHolderName, id, car, numberOfClaims);
+    public ComprehensivePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, int driverAge, int level) {
+        super(policyHolderName, id, car, numberOfClaims, expiryDate);
         this.driverAge = driverAge;
         this.level = level;
     }
@@ -23,7 +23,7 @@ public class ComprehensivePolicy extends InsurancePolicy{
             flatRate += ((30 - driverAge) * 50);
         }
 
-        return super.car.price / 50 + numberOfClaims * 200 + flatRate;
+        return super.getCar().getPrice() / 50 + numberOfClaims * 200 + flatRate;
     }
 
     // toString method
