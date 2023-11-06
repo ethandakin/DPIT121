@@ -119,6 +119,18 @@ public abstract class InsurancePolicy {
         return filteredPolicies;
     }
 
+    public static ArrayList<InsurancePolicy> filterByExpiryDate(ArrayList<InsurancePolicy> policies, MyDate expiryDate) {
+        ArrayList<InsurancePolicy> filteredPolicies = new ArrayList<InsurancePolicy>();
+
+        for (InsurancePolicy policy: policies) {
+            if (policy.getExpiryDate().isExpired(expiryDate)) {
+                filteredPolicies.add(policy);
+            }
+        }
+
+        return filteredPolicies;
+    }
+
     // Print policies method
     public static void printPolicies(ArrayList<InsurancePolicy> policies) {
         // Loop through policies and call print method on them all.

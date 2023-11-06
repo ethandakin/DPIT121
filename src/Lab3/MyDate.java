@@ -42,6 +42,14 @@ public class MyDate {
         this.month = day;
     }
 
+    public boolean isExpired(MyDate date) {
+        if (getYear() > date.getYear() || getYear() <= date.getYear() && getMonth() > date.getMonth() || getYear() <= date.getYear() && getMonth() <= date.getMonth() && getDay() <= date.getDay()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // toString method
     @Override
     public String toString() {

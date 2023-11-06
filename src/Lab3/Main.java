@@ -68,6 +68,7 @@ public class Main {
         user.addPolicy(comprehensivePolicy2);
         user.addPolicy(comprehensivePolicy3);
 
+        /* 
         
         // Call the print method for the user.
         user.print();
@@ -145,6 +146,6 @@ public class Main {
         // Filter the user's cars by the model entered into the scanner in the prior step, then call InsurancePolicy.printPolicies to list them all out.
         InsurancePolicy.printPolicies(user.filterByCarModel(carModel));
         // Close the scanner.
-        scan.close();
+        scan.close(); */
     }
 }
