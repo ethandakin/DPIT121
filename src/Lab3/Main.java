@@ -68,6 +68,15 @@ public class Main {
         user.addPolicy(comprehensivePolicy2);
         user.addPolicy(comprehensivePolicy3);
 
+
+        InsuranceCompany company = new InsuranceCompany("Test", "h", "hhh", flatRate);
+
+        company.addUser(user);
+
+        for (InsurancePolicy policy : company.filterByCarModel("Tesla")) {
+                System.out.print(policy);
+        }
+
         /* 
         
         // Call the print method for the user.

@@ -25,6 +25,10 @@ public class User {
         return address;
     }
 
+    public int getUserID() {
+        return userID;
+    }
+
     // Mutators
     public void setCity(String city) {
         this.address.setCity(city);
@@ -68,6 +72,29 @@ public class User {
     // Filter the policies by a certain car model.
     public ArrayList<InsurancePolicy> filterByCarModel(String carModel) {
         return InsurancePolicy.filterByCarModel(this.policies, carModel);
+    }
+
+        // Filter the policies by a certain car model.
+    public ArrayList<InsurancePolicy> filterByExpiryDate(MyDate date) {
+        return InsurancePolicy.filterByExpiryDate(this.policies, date);
+    }
+
+    public boolean createThirdPartyPolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) {
+        if (findPolicy(id) == null) {
+            addPolicy(new ThirdPartyPolicy(policyHolderName, id, car, numberOfClaims, expiryDate, comments));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean createComprehensivePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, int driverAge, int level) {
+        if (findPolicy(id) == null) {
+            addPolicy(new ComprehensivePolicy(policyHolderName, id, car, numberOfClaims, expiryDate, driverAge, level));
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // Print the user, and the user's policies
