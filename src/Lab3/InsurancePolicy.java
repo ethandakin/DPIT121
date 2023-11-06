@@ -1,4 +1,4 @@
-package Lab2;
+package Lab3;
 import java.util.ArrayList;
 
 // Ethan Dakin
@@ -13,14 +13,15 @@ public abstract class InsurancePolicy {
     protected MyDate expiryDate;
 
     // Constructor
-    public InsurancePolicy(String policyHolderName, int id, Car car, int numberOfClaims) {
+    public InsurancePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate) {
         this.policyHolderName = policyHolderName;
         this.id = id;
         this.car = car;
         this.numberOfClaims = numberOfClaims;
+        this.expiryDate = expiryDate;
     }
 
-    // Mutators
+    // Accessors
     public String getPolicyHolderName() {
         return policyHolderName;
     }
@@ -41,6 +42,7 @@ public abstract class InsurancePolicy {
         return expiryDate;
     }
 
+    // Mutators
     public void setPolicyHolderName(String policyHolderName) {
         this.policyHolderName = policyHolderName;
     }
@@ -63,7 +65,7 @@ public abstract class InsurancePolicy {
 
     // Return formatted attributes
     public String toString() {
-        return String.format("PolicyID: %d\nHolder: %s\n%s\nNumber of claims: %d", id, policyHolderName, car, numberOfClaims);
+        return String.format("PolicyID: %d\nHolder: %s\n%s\nNumber of claims: %d\nExpiry date: %s", id, policyHolderName, car, numberOfClaims, expiryDate);
     }
     
     // Print policies method
@@ -119,6 +121,20 @@ public abstract class InsurancePolicy {
         return filteredPolicies;
     }
 
+    // Filter by expiry date
+    public static ArrayList<InsurancePolicy> filterByExpiryDate(ArrayList<InsurancePolicy> policies, MyDate date) {
+        ArrayList<InsurancePolicy> filteredPolicies = new ArrayList<InsurancePolicy>();
+        
+        for (InsurancePolicy policy: policies) {
+            // If the policy date is expired, add it to the ArrayList.
+            if (policy.getExpiryDate().isExpired(date)) {
+                filteredPolicies.add(policy);
+            }
+        }
+
+        return filteredPolicies;
+    }
+
     // Abstract method for subclasses
     public abstract double calcPayment(double flatRate);
 
@@ -126,6 +142,6 @@ public abstract class InsurancePolicy {
     public void print() {
         System.out.printf("PolicyID: %d\nHolder: %s\n", id, policyHolderName);
         getCar().print();
-        System.out.printf("\nNumber of claims: %d", numberOfClaims);
+        System.out.printf("\nNumber of claims: %d\nExpiry date: %s", numberOfClaims, expiryDate);
     }
 }

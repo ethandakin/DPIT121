@@ -1,4 +1,4 @@
-package Lab2;
+package Lab3;
 
 // Ethan Dakin
 // 8209194
@@ -40,6 +40,15 @@ public class MyDate {
 
     public void setDay(int day) {
         this.month = day;
+    }
+
+    // Check if date is expired
+    public boolean isExpired(MyDate expiryDate) {
+        if (year > expiryDate.year || (year <= expiryDate.year && month > expiryDate.month) || (year <= expiryDate.year && month <= expiryDate.month && day >= expiryDate.day)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // toString method

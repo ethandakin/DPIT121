@@ -1,4 +1,4 @@
-package Lab2;
+package Lab3;
 
 // Ethan Dakin
 // 8209194
@@ -8,8 +8,8 @@ public class ThirdPartyPolicy extends InsurancePolicy{
     protected String comments;
 
     // Constructor
-    public ThirdPartyPolicy(String policyHolderName, int id, Car car, int numberOfClaims, String comments) {
-        super(policyHolderName, id, car, numberOfClaims);
+    public ThirdPartyPolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) {
+        super(policyHolderName, id, car, numberOfClaims, expiryDate);
         this.comments = comments;
     }
 

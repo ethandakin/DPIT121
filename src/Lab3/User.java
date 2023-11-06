@@ -1,4 +1,4 @@
-package Lab2;
+package Lab3;
 import java.util.ArrayList;
 
 // Ethan Dakin
@@ -20,9 +20,13 @@ public class User {
         this.policies = new ArrayList<InsurancePolicy>();
     }
 
-    // Assessors
+    // Accessors
     public Address getAddress() {
         return address;
+    }
+
+    protected int getUserID() {
+        return userID;
     }
 
     // Mutators
@@ -48,12 +52,32 @@ public class User {
     // Returns a policy by searching the policies list with int policyID
     public InsurancePolicy findPolicy(int policyID) {
         for (InsurancePolicy policy: this.policies) {
-            if (policy.id == policyID) {
+            if (policy.getID() == policyID) {
                 return policy;
             }
         }
 
         return null;
+    }
+
+    public boolean createThirdPartyPolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) {
+        if (findPolicy(id) != null) {
+            return false;
+        }
+
+        addPolicy(new ComprehensivePolicy(policyHolderName, id, car, numberOfClaims, expiryDate, id, numberOfClaims));
+
+        return true;
+    }
+
+    public boolean createComprehensivePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, int driverAge, int level) {
+        if (findPolicy(id) != null) {
+            return false;
+        }
+
+        addPolicy(new ComprehensivePolicy(policyHolderName, id, car, numberOfClaims, expiryDate, driverAge, level));
+
+        return true;
     }
 
     // Print the user, and the user's policies
@@ -74,8 +98,8 @@ public class User {
     // Print all the policies the user owns
     public void printPolicies(int flatRate) {
         // Call the static method in InsurancePolicy class
-        System.out.print("Policies: ");
-        InsurancePolicy.printPolicies(this.policies);
+        print();
+        System.out.print("Total premium payments: \n");
         InsurancePolicy.printTotalPayments(policies, flatRate);
     }
 
@@ -93,4 +117,9 @@ public class User {
     public ArrayList<InsurancePolicy> filterByCarModel(String carModel) {
         return InsurancePolicy.filterByCarModel(this.policies, carModel);
     }
+
+    public ArrayList<InsurancePolicy> filterByExpiryDate(MyDate date) {
+        return InsurancePolicy.filterByExpiryDate(policies, date);
+    }
+    
 }

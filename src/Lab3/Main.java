@@ -1,5 +1,5 @@
-package Lab2;
-import java.util.Scanner;
+package Lab3;
+//import java.util.Scanner;
 
 // Ethan Dakin
 // 8209194
@@ -10,6 +10,12 @@ public class Main {
 
     public static void main(String[] args) {
         // Create all the policies, with attributes described in the constructor.
+
+
+
+
+
+        /*
         ThirdPartyPolicy thirdPartyPolicy1 = new ThirdPartyPolicy(
                 "John",
                 1,
@@ -62,6 +68,12 @@ public class Main {
         user.addPolicy(thirdPartyPolicy2);
         user.addPolicy(comprehensivePolicy2);
         user.addPolicy(comprehensivePolicy3);
+
+        MyDate testDate = new MyDate(2015, 5, 30);
+        MyDate expiryDate = new MyDate(2015, 5, 16);
+
+        System.out.print(testDate.isExpired(expiryDate));
+
 
         
         // Call the print method for the user.
@@ -141,5 +153,7 @@ public class Main {
         InsurancePolicy.printPolicies(user.filterByCarModel(carModel));
         // Close the scanner.
         scan.close();
+         */
+
     }
 }

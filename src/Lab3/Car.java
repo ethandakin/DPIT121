@@ -1,4 +1,4 @@
-package Lab2;
+package Lab3;
 
 // Ethan Dakin
 // 8209194
