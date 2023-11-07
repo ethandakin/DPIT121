@@ -75,12 +75,12 @@ public abstract class InsurancePolicy {
     // Return formatted attributes
     @Override
     public String toString() {
-        return String.format("PolicyID: %d\nHolder: %s\n%s\nNumber of claims: %d\nExpiry date: %s", id, policyHolderName, car, numberOfClaims, expiryDate);
+        return String.format("PolicyID: %d\nHolder: %s\nCar: %s\nNumber of claims: %d\nExpiry date: %s", id, policyHolderName, car, numberOfClaims, expiryDate);
     }
 
     // Print out formatted values, with car print in the middle.
     public void print() {
-        System.out.printf("PolicyID: %d\nHolder: %s\n", id, policyHolderName);
+        System.out.printf("PolicyID: %d\nHolder: %s\nCar: ", id, policyHolderName);
         getCar().print();
         System.out.printf("\nNumber of claims: %d\nExpiry date: %s", numberOfClaims, expiryDate);
     }
