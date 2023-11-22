@@ -73,10 +73,12 @@ public class Main {
 
         company.addUser(user);
 
-        for (InsurancePolicy policy : company.filterByCarModel("Tesla")) {
+        /*for (InsurancePolicy policy : company.filterByCarModel("Tesla")) {
                 System.out.print(policy);
-        }
+        }*/
 
+
+        System.out.print(company);
         /* 
         
         // Call the print method for the user.

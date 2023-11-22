@@ -16,6 +16,14 @@ public class InsuranceCompany {
         this.flatRate = flatRate;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getFlatRate() {
+        return flatRate;
+    }
+
     protected String getAdminUsername() {
         return adminUsername;
     }
@@ -163,7 +171,7 @@ public class InsuranceCompany {
     }
 
     public void printPolicies(int userID) {
-
+        
     }
 
     public void print() {
@@ -171,6 +179,14 @@ public class InsuranceCompany {
     }
 
     public String toString() {
-        return String.format("");
+
+
+        String value = String.format("Company name: %s\nFlat rate: %d\nAdmin Username: %s\nAdmin Password: %s\nUsers: \n\n", getName(), getFlatRate(), getAdminUsername(), getAdminPassword());
+
+        for (User user : users) {
+            value += String.format("%s\n", user);
+        }
+
+         return value;
     }
 }
