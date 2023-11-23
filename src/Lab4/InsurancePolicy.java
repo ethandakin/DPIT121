@@ -1,4 +1,4 @@
-package Lab3;
+package Lab4;
 import java.util.ArrayList;
 
 // Ethan Dakin
@@ -19,6 +19,14 @@ public abstract class InsurancePolicy {
         this.car = car;
         this.numberOfClaims = numberOfClaims;
         this.expiryDate = expiryDate;
+    }
+
+    public InsurancePolicy(InsurancePolicy policy) {
+        this.policyHolderName = policy.policyHolderName;
+        this.id = policy.id;
+        this.car = policy.car;
+        this.numberOfClaims = policy.numberOfClaims;
+        this.expiryDate = policy.expiryDate;
     }
 
     // Accessors
@@ -133,6 +141,15 @@ public abstract class InsurancePolicy {
 
         return filteredPolicies;
     }
+
+    public static ArrayList<InsurancePolicy> shallowCopy(ArrayList<InsurancePolicy> policies) {
+        return policies;
+    };
+
+    public static ArrayList<InsurancePolicy> deepCopy(ArrayList<InsurancePolicy> policies) {
+        return new ArrayList<InsurancePolicy>(policies);
+    };
+
 
     // Print policies method
     public static void printPolicies(ArrayList<InsurancePolicy> policies) {

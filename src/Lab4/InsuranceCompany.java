@@ -1,4 +1,4 @@
-package Lab3;
+package Lab4;
 import java.util.ArrayList;
 
 // Ethan Dakin
@@ -36,10 +36,6 @@ public class InsuranceCompany {
 
     protected String getAdminPassword() {
         return adminPassword;
-    }
-
-    protected ArrayList<User> getUsers() {
-        return users;
     }
 
     // Validate admin function, checks if given username and password match the company username/password.
@@ -94,7 +90,7 @@ public class InsuranceCompany {
 
     // Adds a policy to a given user, if user and policy are valid.
     public boolean addPolicy(int userID, InsurancePolicy policy) {
-        if (findUser(userID) != null && findUser(userID).findPolicy(policy.getID()) == null) {
+        if (findUser(userID) == null && findUser(userID).findPolicy(policy.getID()) == null) {
             findUser(userID).addPolicy(policy);
             return true;
         } else {
@@ -200,14 +196,12 @@ public class InsuranceCompany {
 
     // Prints user information and all policies for a given user.
     public void printPolicies(int userID) {
-        User user = findUser(userID);
-        user.print();
-        user.printPolicies(flatRate);
+        findUser(userID).printPolicies(flatRate);
     }
 
-    // Prints all users and policies
+    // Print method, prints all information about the company and all information about its users
     public void print() {
-        //System.out.print(String.format("Company name: %s\nFlat rate: %d\nAdmin Username: %s\nAdmin Password: %s\nUsers: \n\n", getName(), getFlatRate(), getAdminUsername(), getAdminPassword()));
+        System.out.print(String.format("Company name: %s\nFlat rate: %d\nAdmin Username: %s\nAdmin Password: %s\nUsers: \n\n", getName(), getFlatRate(), getAdminUsername(), getAdminPassword()));
 
         for (User user : users) {
             user.print();

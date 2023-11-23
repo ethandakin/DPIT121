@@ -1,4 +1,4 @@
-package Lab3;
+package Lab4;
 
 // Ethan Dakin
 // 8209194
@@ -14,6 +14,12 @@ public class MyDate {
         this.year = year;
         this.month = month;
         this.day = day;
+    }
+
+    public MyDate(MyDate date) {
+        this.year = date.year;
+        this.month = date.month;
+        this.day = date.day;
     }
 
     // Accessors
@@ -43,11 +49,19 @@ public class MyDate {
     }
 
     public boolean isExpired(MyDate date) {
-        if (getYear() < date.getYear() || getYear() <= date.getYear() && getMonth() < date.getMonth() || getYear() <= date.getYear() && getMonth() <= date.getMonth() && getDay() <= date.getDay()) {
+        if (getYear() < date.getYear()) {
             return true;
-        } else {
-            return false;
         }
+
+        if (getMonth() < date.getMonth()) {
+            return true;
+        }
+
+        if (getDay() < date.getDay()) {
+            return true;
+        }
+
+        return false;
     }
 
     // toString method

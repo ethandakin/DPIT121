@@ -1,5 +1,6 @@
 package Lab3;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 // Ethan Dakin
 // 8209194
@@ -58,105 +59,135 @@ public class Main {
                 2
         );
 
-        // Create the user and address.
-        User user = new User("Jeremy", 1, new Address(18, "Green St", "Strathfield", "Sydney"));
+        ThirdPartyPolicy thirdPartyPolicy3 = new ThirdPartyPolicy(
+                "Liam",
+                6,
+                new Car("Suzuki", CarType.HATCH, 2007, 8500),
+                32,
+                new MyDate(2018, 3, 3),
+                "Tax fraud"
+        );
 
-        // Add all the policies into the user using addPolicy method
-        user.addPolicy(thirdPartyPolicy1);
-        user.addPolicy(comprehensivePolicy1);
-        user.addPolicy(thirdPartyPolicy2);
-        user.addPolicy(comprehensivePolicy2);
-        user.addPolicy(comprehensivePolicy3);
-
-
-        InsuranceCompany company = new InsuranceCompany("Test", "h", "hhh", flatRate);
-
-        company.addUser(user);
-
-        /*for (InsurancePolicy policy : company.filterByCarModel("Tesla")) {
-                System.out.print(policy);
-        }*/
-
-
-        System.out.print(company);
-        /* 
-        
-        // Call the print method for the user.
-        user.print();
-        
-        // Print the user with toString
-        System.out.print(user);
-
-        // Invalid policy ID
-        InsurancePolicy policyNotFound = user.findPolicy(7);
-        // Valid policy ID
-        InsurancePolicy policyFound = user.findPolicy(2);
-
-
-        if (policyNotFound == null) { System.out.print("Policy has not been found\n\n"); }
-    
-        // Print the valid policy with toString method
-        System.out.print(policyFound);
-        System.out.println();
-        // Rise the car price by 10%
-        policyFound.carPriceRise(0.1);
-        // Print the policy again
-        System.out.print(policyFound);
-
-        // set policyHolderName to Robert with selected method
-        policyFound.setPolicyHolderName("Robert");
-        // Set the car model to Toyota Camry
-        policyFound.getCar().setModel("Toyota Camry");
-        // Set manufacturing year to 2018
-        policyFound.getCar().setManufacturingYear(2018);
-
-        // Set the city of the user to Wollongong
-        user.setCity("Wollongong");
-
-        // Create scanner
         Scanner scan = new Scanner(System.in);
-        // Print out information for the new address
-        System.out.println("\nEnter new address information: ");
 
-        // Enter Street Number
-        System.out.print("Street Number: ");
-        int number = Integer.parseInt(scan.nextLine());
+        User user1 = new User("Jeremy", 1, new Address(18, "Green St", "Strathfield", "Sydney"));
+        User user3 = new User("Lisa", 3, new Address(4, "Louisa St", "Brunswick", "Melbourne"));
 
-        // Enter Street
-        System.out.print("Street: ");
+        InsuranceCompany company = new InsuranceCompany("Awesome Insurance", "SuperSecretLogin", "ThisIsASafePassword", flatRate);
+
+        
+        System.out.print("Enter username: ");
+        String username = scan.nextLine();
+        System.out.print("Enter password: ");
+        String password = scan.nextLine();
+
+        System.out.println("Login successful: " + company.validateAdmin(username, password));
+        System.out.println();
+
+        System.out.print("Enter wrong username: ");
+        String wrongUsername = scan.nextLine();
+        System.out.print("Enter wrong password: ");
+        String wrongPassword = scan.nextLine();
+        
+        System.out.println("Login successful: " + company.validateAdmin(wrongUsername, wrongPassword));
+        System.out.println();
+
+
+        // First method, pass the user object through
+        company.addUser(user1);
+        // Second method, attributes as parameters
+        company.addUser("Thomas", 2, new Address(144, "Brokers Rd", "Mount Pleasant", "Wollongong"));
+        // Third user, correct
+        company.addUser(user3);
+        // Fourth user, duplicate.
+        company.addUser("Thomas", 2, new Address(144, "Brokers Rd", "Mount Pleasant", "Wollongong"));
+        
+        // Add policies
+        company.addPolicy(1, thirdPartyPolicy1);
+        company.addPolicy(1, comprehensivePolicy1);
+
+        company.addPolicy(2, thirdPartyPolicy2);
+        company.addPolicy(2, comprehensivePolicy2);
+
+        company.addPolicy(3, thirdPartyPolicy3);
+        company.addPolicy(3, comprehensivePolicy3);
+
+        // Incorrect policies
+        company.addPolicy(4, thirdPartyPolicy1);
+        company.addPolicy(1, thirdPartyPolicy1);
+
+
+        System.out.print("Enter UserID: ");
+        int userID = Integer.parseInt(scan.nextLine());
+        System.out.println();
+
+        company.printPolicies(userID);
+
+        System.out.print("Enter UserID: ");
+        int userID2 = Integer.parseInt(scan.nextLine());
+        System.out.print("Enter PolicyID: ");
+        int policyID = Integer.parseInt(scan.nextLine());
+        System.out.println();
+
+        System.out.print(company.findPolicy(userID2, policyID));
+        System.out.println();
+
+        company.print();
+
+        company.carPriceRise(0.1);
+        company.print();
+
+
+        System.out.print("Enter UserID: ");
+        int userID3 = Integer.parseInt(scan.nextLine());
+        System.out.printf("Total payments for UserID %d: %.2f", userID3, company.calcTotalPayments(userID3));
+        System.out.println("\n");
+        System.out.printf("Total payments for all users: %.2f", company.calcTotalPayments());
+        System.out.println("\n");
+
+        ArrayList<InsurancePolicy> policies = company.allPolicies();
+        InsurancePolicy.printPolicies(policies);
+
+        System.out.print("Enter UserID: ");
+        int userID4 = Integer.parseInt(scan.nextLine());
+        System.out.print("Enter current date: ");
+        System.out.println();
+
+        MyDate expiryDate = new MyDate(scan.nextInt(), scan.nextInt(), scan.nextInt());
+        scan.nextLine();
+        ArrayList<InsurancePolicy> expiredPolicies = company.filterByExpiryDate(userID4, expiryDate);
+        System.out.println();
+        InsurancePolicy.printPolicies(expiredPolicies);
+
+        System.out.print("Enter car model: ");
+        String model = scan.nextLine();
+
+        System.out.println();
+
+        InsurancePolicy.printPolicies(company.filterByCarModel(model));
+
+        System.out.print("Enter expiry date: ");
+        MyDate expiryDate2 = new MyDate(scan.nextInt(), scan.nextInt(), scan.nextInt());
+        scan.nextLine();
+        InsurancePolicy.printPolicies(company.filterByExpiryDate(expiryDate2));
+
+
+        System.out.print("Enter UserID: ");
+        int userID5 = Integer.parseInt(scan.nextLine());
+
+        User user = company.findUser(userID5);
+
+        System.out.print("Enter street number: ");
+        int streetNumber = Integer.parseInt(scan.nextLine());
+        System.out.print("Enter street: ");
         String street = scan.nextLine();
-
-        // Enter Suburb
-        System.out.print("Suburb: ");
+        System.out.print("Enter suburb: ");
         String suburb = scan.nextLine();
-
-        // Enter City
-        System.out.print("City: ");
+        System.out.print("Enter city: ");
         String city = scan.nextLine();
-        System.out.println();
 
-        // Set the user's address with setAddress
-        user.setAddress(new Address(number, street, suburb, city));
+        user.setAddress(new Address(streetNumber, street, suburb, city));
 
-        // Print the user with toString to see the address change
-        System.out.print(user);
-
-        // Print the total premium payments for all policies that the user owns
-        System.out.printf("Total premium payments: $%.1f\n", user.calcTotalPremiums(flatRate));
-        // Rise the price of all cars the user owns by 10%
-        user.carPriceRiseAll(0.1);
-        // Print the total premium payments again to see the difference.
-        System.out.printf("Total premium payments: $%.1f\n\n", user.calcTotalPremiums(flatRate));
-
-        // Print out information for scanner
-        System.out.print("Please enter a car model: ");
-        // Enter the car model
-        String carModel = scan.nextLine();
-        System.out.println();
-
-        // Filter the user's cars by the model entered into the scanner in the prior step, then call InsurancePolicy.printPolicies to list them all out.
-        InsurancePolicy.printPolicies(user.filterByCarModel(carModel));
-        // Close the scanner.
-        scan.close(); */
+        scan.close();
     }
 }
