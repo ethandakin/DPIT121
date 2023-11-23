@@ -51,17 +51,13 @@ public class MyDate {
     public boolean isExpired(MyDate date) {
         if (getYear() < date.getYear()) {
             return true;
-        }
-
-        if (getMonth() < date.getMonth()) {
+        } else if (getYear() <= date.getYear() && getMonth() < date.getMonth()) {
             return true;
-        }
-
-        if (getDay() < date.getDay()) {
+        } else if (getYear() <= date.getYear() && getMonth() <= date.getMonth() && getDay() <= date.getDay()) {
             return true;
+        } else {
+            return false;
         }
-
-        return false;
     }
 
     // toString method
