@@ -75,7 +75,6 @@ public class Main {
 
         InsuranceCompany company = new InsuranceCompany("Awesome Insurance", "SuperSecretLogin", "ThisIsASafePassword", flatRate);
 
-        
         System.out.print("Enter username: ");
         String username = scan.nextLine();
         System.out.print("Enter password: ");
@@ -116,6 +115,7 @@ public class Main {
         company.addPolicy(4, thirdPartyPolicy1);
         company.addPolicy(1, thirdPartyPolicy1);
 
+        
 
         System.out.print("Enter UserID: ");
         int userID = Integer.parseInt(scan.nextLine());
