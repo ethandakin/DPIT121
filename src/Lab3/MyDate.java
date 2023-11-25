@@ -43,7 +43,11 @@ public class MyDate {
     }
 
     public boolean isExpired(MyDate date) {
-        if (getYear() < date.getYear() || getYear() <= date.getYear() && getMonth() < date.getMonth() || getYear() <= date.getYear() && getMonth() <= date.getMonth() && getDay() <= date.getDay()) {
+        if (getYear() < date.getYear()) {
+            return true;
+        } else if (getYear() <= date.getYear() && getMonth() < date.getMonth()) {
+            return true;
+        } else if (getYear() <= date.getYear() && getMonth() <= date.getMonth() && getDay() <= date.getDay()) {
             return true;
         } else {
             return false;

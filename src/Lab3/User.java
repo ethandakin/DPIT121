@@ -9,7 +9,7 @@ public class User {
     private String name;
     private int userID;
     private Address address;
-    ArrayList<InsurancePolicy> policies;
+    protected ArrayList<InsurancePolicy> policies;
 
     // Constructor
     public User(String name, int userID, Address address) {
