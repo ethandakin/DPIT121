@@ -11,6 +11,10 @@ public class UserInterface {
         System.out.println("\nPlease choose an option from 1 to 2: ");
     }
 
+    public static void login() {
+        displayLoginMenu();
+    }
+
     public static void displayMainMenu() {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
@@ -27,14 +31,7 @@ public class UserInterface {
     }
 
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        displayLoginMenu();
-
-        int choice = Integer.parseInt(scan.nextLine());
-
-        if (choice != 1) {
-            return;
-        }
+        login();
 
 
 
