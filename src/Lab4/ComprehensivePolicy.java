@@ -14,12 +14,29 @@ public class ComprehensivePolicy extends InsurancePolicy{
         this.driverAge = driverAge;
         this.level = level;
     }
-    
-    // Copy constructor
+
     public ComprehensivePolicy(ComprehensivePolicy policy) {
-        super(policy.policyHolderName, policy.id, policy.car, policy.numberOfClaims, policy.expiryDate);
+        super(policy);
         this.driverAge = policy.driverAge;
         this.level = policy.level;
+    }
+
+    // Accessors
+    public int getDriverAge() {
+        return driverAge;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    // Mutators
+    public void setDriverAge(int driverAge) {
+        this.driverAge = driverAge;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     // Override calcPayment method

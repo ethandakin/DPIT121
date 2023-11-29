@@ -21,21 +21,41 @@ public class User {
     }
 
     // Assessors
-    public Address getAddress() {
-        return address;
+    public String getName() {
+        return name;
     }
 
     public int getUserID() {
         return userID;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public ArrayList<InsurancePolicy> getPolicies() {
+        return policies;
+    }
+
     // Mutators
-    public void setCity(String city) {
-        this.address.setCity(city);
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public void setPolicies(ArrayList<InsurancePolicy> policies) {
+        this.policies = policies;
+    }
+
+    public void setCity(String city) {
+        this.address.setCity(city);
     }
 
     // Add policy to the policies ArrayList if the ID is valid.
@@ -50,7 +70,7 @@ public class User {
 
     // Returns a policy by searching the policies list with int policyID
     public InsurancePolicy findPolicy(int policyID) {
-        for (InsurancePolicy policy: this.policies) {
+        for (InsurancePolicy policy: getPolicies()) {
             if (policy.id == policyID) {
                 return policy;
             }
@@ -61,22 +81,22 @@ public class User {
 
     // Calculate the total premiums
     public double calcTotalPremiums(int flatRate) {
-        return InsurancePolicy.calcTotalPayments(this.policies, flatRate);
+        return InsurancePolicy.calcTotalPayments(getPolicies(), flatRate);
     }
 
     // Rise all the policies car prices
     public void carPriceRiseAll(double risePercent) {
-        InsurancePolicy.carPriceRiseAll(this.policies, risePercent);
+        InsurancePolicy.carPriceRiseAll(getPolicies(), risePercent);
     }
 
     // Filter the policies by a certain car model.
     public ArrayList<InsurancePolicy> filterByCarModel(String carModel) {
-        return InsurancePolicy.filterByCarModel(this.policies, carModel);
+        return InsurancePolicy.filterByCarModel(getPolicies(), carModel);
     }
 
         // Filter the policies by a certain car model.
     public ArrayList<InsurancePolicy> filterByExpiryDate(MyDate date) {
-        return InsurancePolicy.filterByExpiryDate(this.policies, date);
+        return InsurancePolicy.filterByExpiryDate(getPolicies(), date);
     }
 
     public boolean createThirdPartyPolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) {
@@ -99,22 +119,22 @@ public class User {
 
     // Print the user, and the user's policies
     public void print() {
-        System.out.printf("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", userID, name, getAddress());
-        InsurancePolicy.printPolicies(policies);
+        System.out.printf("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", getUserID(), getName(), getAddress());
+        InsurancePolicy.printPolicies(getPolicies());
     }
 
     // Return the user information and the user's policies as a string.
     @Override
     public String toString() {
         String policiesString = "";
-        for (InsurancePolicy policy : policies) {
+        for (InsurancePolicy policy : getPolicies()) {
             policiesString += String.format("%s\n", policy);
         }
-        return String.format("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", userID, name, getAddress()) + policiesString;
+        return String.format("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", getUserID(), getName(), getAddress()) + policiesString;
     }
 
     // Print all the policies the user owns
     public void printPolicies(int flatRate) {
-        InsurancePolicy.printPoliciesAndPremium(policies, flatRate);
+        InsurancePolicy.printPoliciesAndPremium(getPolicies(), flatRate);
     }
 }

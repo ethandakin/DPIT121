@@ -1,9 +1,10 @@
 package Lab4;
+import java.lang.Cloneable;
 
 // Ethan Dakin
 // 8209194
 
-public class MyDate {
+public class MyDate implements Cloneable{
     // Protected attributes for date
     protected int year;
     protected int month;
@@ -20,6 +21,11 @@ public class MyDate {
         this.year = date.year;
         this.month = date.month;
         this.day = date.day;
+    }
+
+    @Override 
+    protected MyDate clone() throws CloneNotSupportedException {
+        return (MyDate) super.clone();
     }
 
     // Accessors
@@ -63,11 +69,11 @@ public class MyDate {
     // toString method
     @Override
     public String toString() {
-        return String.format("%d/%d/%d", day, month, year);
+        return String.format("%d/%d/%d", getDay(), getMonth(), getYear());
     }
     
     // Print method
     public void print() {
-        System.out.printf("%d/%d/%d", day, month, year);
+        System.out.printf("%d/%d/%d", getDay(), getMonth(), getYear());
     }
 }

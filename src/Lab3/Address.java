@@ -55,11 +55,11 @@ public class Address {
     // toString method
     @Override
     public String toString() {
-        return String.format("%d %s, %s, %s", streetNum, street, suburb, city);
+        return String.format("%d %s, %s, %s", getStreetNum(), getStreet(), getSuburb(), getCity());
     }
 
     // Print method
     public void print() {
-        System.out.printf("%d %s, %s, %s", streetNum, street, suburb, city);
+        System.out.printf("%d %s, %s, %s", getStreetNum(), getStreet(), getSuburb(), getCity());
     }
 }

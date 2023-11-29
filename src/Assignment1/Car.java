@@ -63,11 +63,11 @@ public class Car {
     // toString method
     @Override
     public String toString() {
-        return String.format("%s %d %s ($%.2f)", this.model, this.manufacturingYear, this.type, this.price);
+        return String.format("%s %d %s ($%.2f)", getModel(), getManufacturingYear(), getType(), getPrice());
     }
 
     // Print method
     public void print() {
-        System.out.printf("%s %d %s ($%.2f)", this.model, this.manufacturingYear, this.type, this.price);
+        System.out.printf("%s %d %s ($%.2f)", getModel(), getManufacturingYear(), getType(), getPrice());
     }
 }

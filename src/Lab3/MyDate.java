@@ -57,11 +57,11 @@ public class MyDate {
     // toString method
     @Override
     public String toString() {
-        return String.format("%d/%d/%d", day, month, year);
+        return String.format("%d/%d/%d", getDay(), getMonth(), getYear());
     }
     
     // Print method
     public void print() {
-        System.out.printf("%d/%d/%d", day, month, year);
+        System.out.printf("%d/%d/%d", getDay(), getMonth(), getYear());
     }
 }

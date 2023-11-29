@@ -18,6 +18,13 @@ public class Address {
         this.city = city;
     }
 
+    public Address(Address address) {
+        this.streetNum = address.streetNum;
+        this.street = address.street;
+        this.suburb = address.suburb;
+        this.city = address.city;
+    }
+
     // Accessors
     public int getStreetNum() {
         return streetNum;
@@ -55,11 +62,11 @@ public class Address {
     // toString method
     @Override
     public String toString() {
-        return String.format("%d %s, %s, %s", streetNum, street, suburb, city);
+        return String.format("%d %s, %s, %s", getStreetNum(), getStreet(), getSuburb(), getCity());
     }
 
     // Print method
     public void print() {
-        System.out.printf("%d %s, %s, %s", streetNum, street, suburb, city);
+        System.out.printf("%d %s, %s, %s", getStreetNum(), getStreet(), getSuburb(), getCity());
     }
 }

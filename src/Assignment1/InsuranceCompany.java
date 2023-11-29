@@ -26,8 +26,8 @@ public class InsuranceCompany {
         return name;
     }
 
-    public int getFlatRate() {
-        return flatRate;
+    protected ArrayList<User> getUsers() {
+        return users;
     }
 
     protected String getAdminUsername() {
@@ -38,10 +38,10 @@ public class InsuranceCompany {
         return adminPassword;
     }
 
-    protected ArrayList<User> getUsers() {
-        return users;
+    public int getFlatRate() {
+        return flatRate;
     }
-
+    
     // Validate admin function, checks if given username and password match the company username/password.
     public boolean validateAdmin(String username, String password) {
         // If username and password are equal then return true, else return false.
@@ -54,7 +54,7 @@ public class InsuranceCompany {
 
     // Find user method, loops through all users and returns one with a given id, or null.
     public User findUser(int userID) {
-        for (User user: users) {
+        for (User user: getUsers()) {
             if (user.getUserID() == userID) {
                 return user;
             }
@@ -75,7 +75,7 @@ public class InsuranceCompany {
     // Adds a user to the company, if the user id is not taken.
     public boolean addUser(User user) {
         if (findUser(user.getUserID()) == null) {
-            users.add(user);
+            getUsers().add(user);
             return true;
         } else {
             return false;
@@ -85,7 +85,7 @@ public class InsuranceCompany {
     // Create and add a user to the company if the user id is available.
     public boolean addUser(String name, int userID, Address address) {
         if (findUser(userID) == null) {
-            users.add(new User(name, userID, address));
+            getUsers().add(new User(name, userID, address));
             return true;
         } else {
             return false;
@@ -129,7 +129,7 @@ public class InsuranceCompany {
     public double calcTotalPayments() {
         double result = 0.0;
 
-        for (User user : users) {
+        for (User user : getUsers()) {
             result += user.calcTotalPremiums(flatRate);
         }
 
@@ -148,7 +148,7 @@ public class InsuranceCompany {
 
     // Rises all car prices for all users.
     public void carPriceRise(double risePercent) {
-        for (User user : users) {
+        for (User user : getUsers()) {
             user.carPriceRiseAll(risePercent);
         }
     }
@@ -157,8 +157,8 @@ public class InsuranceCompany {
     public ArrayList<InsurancePolicy> allPolicies() {
         ArrayList<InsurancePolicy> policies = new ArrayList<InsurancePolicy>();
 
-        for (User user : users) {
-            for (InsurancePolicy policy : user.policies) {
+        for (User user : getUsers()) {
+            for (InsurancePolicy policy : user.getPolicies()) {
                 policies.add(policy);
             }
         }
@@ -180,7 +180,7 @@ public class InsuranceCompany {
     public ArrayList<InsurancePolicy> filterByCarModel(String carModel) {
         ArrayList<InsurancePolicy> policies = new ArrayList<InsurancePolicy>();
 
-        for (User user : users) {
+        for (User user : getUsers()) {
             policies.addAll(user.filterByCarModel(carModel));
         }
 
@@ -191,7 +191,7 @@ public class InsuranceCompany {
     public ArrayList<InsurancePolicy> filterByExpiryDate(MyDate date) {
         ArrayList<InsurancePolicy> policies = new ArrayList<InsurancePolicy>();
 
-        for (User user : users) {
+        for (User user : getUsers()) {
             policies.addAll(user.filterByExpiryDate(date));
         }
 
@@ -209,7 +209,7 @@ public class InsuranceCompany {
     public void print() {
         //System.out.print(String.format("Company name: %s\nFlat rate: %d\nAdmin Username: %s\nAdmin Password: %s\nUsers: \n\n", getName(), getFlatRate(), getAdminUsername(), getAdminPassword()));
 
-        for (User user : users) {
+        for (User user : getUsers()) {
             user.print();
         }
     }
@@ -219,7 +219,7 @@ public class InsuranceCompany {
     public String toString() {
         String value = String.format("Company name: %s\nFlat rate: %d\nAdmin Username: %s\nAdmin Password: %s\nUsers: \n\n", getName(), getFlatRate(), getAdminUsername(), getAdminPassword());
 
-        for (User user : users) {
+        for (User user : getUsers()) {
             value += String.format("%s\n", user);
         }
 

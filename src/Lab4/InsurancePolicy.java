@@ -83,14 +83,14 @@ public abstract class InsurancePolicy {
     // Return formatted attributes
     @Override
     public String toString() {
-        return String.format("PolicyID: %d\nHolder: %s\n%s\nNumber of claims: %d\nExpiry date: %s", id, policyHolderName, car, numberOfClaims, expiryDate);
+        return String.format("PolicyID: %d\nHolder: %s\n%s\nNumber of claims: %d\nExpiry date: %s", getID(), getPolicyHolderName(), getCar(), getNumberOfClaims(), getExpiryDate());
     }
 
     // Print out formatted values, with car print in the middle.
     public void print() {
-        System.out.printf("PolicyID: %d\nHolder: %s\n", id, policyHolderName);
+        System.out.printf("PolicyID: %d\nHolder: %s\n", getID(), getPolicyHolderName());
         getCar().print();
-        System.out.printf("\nNumber of claims: %d\nExpiry date: %s", numberOfClaims, expiryDate);
+        System.out.printf("\nNumber of claims: %d\nExpiry date: %s", getNumberOfClaims(), getExpiryDate());
     }
 
     // Static methods
@@ -130,8 +130,6 @@ public abstract class InsurancePolicy {
     public static ArrayList<InsurancePolicy> filterByExpiryDate(ArrayList<InsurancePolicy> policies, MyDate date) {
         ArrayList<InsurancePolicy> filteredPolicies = new ArrayList<InsurancePolicy>();
 
-       
-
         for (InsurancePolicy policy: policies) {
             if (policy.getExpiryDate().isExpired(date) == true) {
                  //System.out.print(policy.expiryDate + " " + date);
@@ -141,15 +139,6 @@ public abstract class InsurancePolicy {
 
         return filteredPolicies;
     }
-
-    public static ArrayList<InsurancePolicy> shallowCopy(ArrayList<InsurancePolicy> policies) {
-        return policies;
-    };
-
-    public static ArrayList<InsurancePolicy> deepCopy(ArrayList<InsurancePolicy> policies) {
-        return new ArrayList<InsurancePolicy>(policies);
-    };
-
 
     // Print policies method
     public static void printPolicies(ArrayList<InsurancePolicy> policies) {
