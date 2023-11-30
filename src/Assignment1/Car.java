@@ -3,9 +3,6 @@ package Assignment1;
 // Ethan Dakin
 // 8209194
 
-// CarTypes enum
-enum CarType {SUV, SED, LUX, HATCH, etc}
-
 public class Car {
     // Attributes
     protected String model;
