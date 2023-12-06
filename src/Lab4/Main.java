@@ -1,8 +1,6 @@
-package Assignment1.Advanced;
+package Lab4;
 import java.util.Scanner;
 import java.util.ArrayList;
-
-import Assignment1.*;
 
 // Ethan Dakin
 // 8209194
@@ -13,7 +11,7 @@ public class Main {
     public static InsuranceCompany company;
     public static User user;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         // Initialize the scanner
         scan = new Scanner(System.in);
         // Create the company
@@ -43,7 +41,7 @@ public class Main {
     }
 
     // Base logic for menu prompt, while loop with a switch statement.
-    public static void mainMenu() {
+    public static void mainMenu() throws CloneNotSupportedException{
         int option = 0;
 
         while (option != 3) {
@@ -84,7 +82,7 @@ public class Main {
     }
     
     // Switch statement for all admin commands
-    public static void adminMenu() {
+    public static void adminMenu() throws CloneNotSupportedException {
         int option = 0;
 
         while (option != 12) {
@@ -139,7 +137,7 @@ public class Main {
     }
 
     // Admin login
-    public static void adminLogin() {
+    public static void adminLogin() throws CloneNotSupportedException {
         System.out.print("Enter admin username: ");
         String username = scan.nextLine();
         System.out.print("Enter admin password: ");
@@ -242,7 +240,7 @@ public class Main {
     }
 
     // ADMIN MENU METHODS
-    public static void testCode() {
+    public static void testCode() throws CloneNotSupportedException {
         // Create all the policies, with attributes described in the constructor.
         ThirdPartyPolicy thirdPartyPolicy1 = new ThirdPartyPolicy(
                 "John",
@@ -317,16 +315,14 @@ public class Main {
         company.addPolicy(3, thirdPartyPolicy3);
         company.addPolicy(3, comprehensivePolicy3);
 
-        ArrayList<String> cities = company.populateDistinctCityNames();
-        System.out.println(company.getTotalPaymentForCity("Wollongong"));
-        company.reportPaymentPerCity(cities, company.getTotalPaymentPerCity(cities));
+
+        ArrayList<InsurancePolicy> shallowCopy = user1.shallowCopyPolicies();
+        ArrayList<InsurancePolicy> deepCopy = user1.deepCopyPolicies();
+
+        user1.getAddress().setCity("New York");
+        user1.createComprehensivePolicy("Kanye", 9, new Car(thirdPartyPolicy2.getCar()), 15, new MyDate(2030, 11, 20), 38, 1);
 
 
-        ArrayList<String> cars = company.populateDistinctCarModels();
-        ArrayList<Integer> count = company.getTotalCountPerCarModel(cars);
-        ArrayList<Double> payments = company.getTotalPaymentPerCarModel(cars);
-
-        company.reportPaymentsPerCarModel(cars, count, payments);
     }
 
     public static void createUser() {

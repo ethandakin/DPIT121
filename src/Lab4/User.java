@@ -1,17 +1,11 @@
-package Assignment1.Advanced;
+package Lab4;
 import java.util.ArrayList;
-
-import Assignment1.Address;
-import Assignment1.InsurancePolicy;
-import Assignment1.ComprehensivePolicy;
-import Assignment1.ThirdPartyPolicy;
-import Assignment1.MyDate;
-import Assignment1.Car;
+import java.util.Collections;
 
 // Ethan Dakin
 // 8209194
 
-public class User {
+public class User implements Cloneable, Comparable<User> {
     // Private attributes for user details, and ArrayList for policies.
     private String name;
     private int userID;
@@ -27,6 +21,13 @@ public class User {
         this.address = address;
         // Create new ArrayList for all the policies this user holds
         this.policies = new ArrayList<InsurancePolicy>();
+    }
+
+    public User(User user) {
+        this.name = user.name;
+        this.userID = user.userID;
+        this.address = user.address;
+        this.policies = user.policies;
     }
 
     // Assessors
@@ -215,8 +216,69 @@ public class User {
         return String.format("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", getUserID(), getName(), getAddress()) + policiesString;
     }
 
+    @Override 
+    public User clone() throws CloneNotSupportedException {
+        return (User) super.clone();
+    }
+
     // Print all the policies the user owns
     public void printPolicies(int flatRate) {
         InsurancePolicy.printPoliciesAndPremium(getPolicies(), flatRate);
+    }
+
+    public ArrayList<InsurancePolicy> shallowCopyPolicies() {
+        ArrayList<InsurancePolicy> copy = new ArrayList<InsurancePolicy>();
+
+        for (InsurancePolicy policy : getPolicies()) {
+            copy.add(policy);
+        }
+
+        return copy;
+    } 
+
+    public ArrayList<InsurancePolicy> deepCopyPolicies() throws CloneNotSupportedException {
+        ArrayList<InsurancePolicy> copy = new ArrayList<InsurancePolicy>();
+
+        for (InsurancePolicy policy : getPolicies()) {
+            copy.add(policy.clone());
+        }
+
+        return copy;
+    } 
+
+    public static ArrayList<User> shallowCopy(ArrayList<User> users) {
+        ArrayList<User> copy = new ArrayList<User>();
+
+        for (User user : users) {
+            copy.add(user);
+        }
+
+        return copy;
+    }
+
+    public static ArrayList<User> deepCopy(ArrayList<User> users) throws CloneNotSupportedException {
+        ArrayList<User> copy = new ArrayList<User>();
+
+        for (User user : users) {
+            copy.add(user.clone());
+        }
+
+        return copy;
+    }
+
+    @Override
+    public int compareTo(User user) {
+        return getAddress().getCity().compareTo(user.getAddress().getCity());
+    }
+
+    public int compareTo1(User user) {
+        return (int) (calcTotalPremiums(0)) - (int) (user.calcTotalPremiums(userCount));
+    }
+
+    public ArrayList<InsurancePolicy> sortPoliciesByDate() {
+        ArrayList<InsurancePolicy> policies = new ArrayList<InsurancePolicy>();
+
+
+        return policies;
     }
 }

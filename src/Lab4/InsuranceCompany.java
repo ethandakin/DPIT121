@@ -1,11 +1,10 @@
-package Assignment1.Advanced;
+package Lab4;
 import java.util.ArrayList;
-import Assignment1.*;
 
 // Ethan Dakin
 // 8209194
 
-public class InsuranceCompany {
+public class InsuranceCompany implements Cloneable {
     // Attributes
     public String name;
     private ArrayList<User> users;
@@ -20,6 +19,19 @@ public class InsuranceCompany {
         this.adminUsername = adminUsername;
         this.adminPassword = adminPassword;
         this.flatRate = flatRate;
+    }
+
+    public InsuranceCompany(InsuranceCompany company) {
+        this.name = company.name;
+        this.users = company.users;
+        this.adminUsername = company.adminUsername;
+        this.adminPassword = company.adminPassword;
+        this.flatRate = company.flatRate;
+    }
+
+    @Override
+    public InsuranceCompany clone() throws CloneNotSupportedException {
+        return (InsuranceCompany) super.clone();
     }
 
     // Accessors
@@ -326,6 +338,14 @@ public class InsuranceCompany {
         user.print();
         user.printPolicies(flatRate);
     }
+
+    public ArrayList<User> shallowCopyUsers() {
+        return User.shallowCopy(getUsers());
+    } 
+
+    public ArrayList<User> deepCopyUsers() throws CloneNotSupportedException {
+        return User.deepCopy(getUsers());
+    } 
 
     // Prints all users and policies
     public void print() {
