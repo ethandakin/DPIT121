@@ -42,6 +42,11 @@ public class InsuranceCompany {
     public int getFlatRate() {
         return flatRate;
     }
+
+    // Mutators
+    protected void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
+    }
     
     // Validate admin function, checks if given username and password match the company username/password.
     public boolean validateAdmin(String username, String password) {
@@ -55,13 +60,15 @@ public class InsuranceCompany {
 
     // Find user method, loops through all users and returns one with a given id, or null.
     public User findUser(int userID) {
-        for (User user: getUsers()) {
+        User foundUser = null;
+
+        for (User user : getUsers()) {
             if (user.getUserID() == userID) {
-                return user;
+                foundUser = user;
             }
         }
 
-        return null;
+        return foundUser;
     }
 
     // Find policy method, finds and returns a policy if user and policy id are found, else returns null.
@@ -93,10 +100,28 @@ public class InsuranceCompany {
         }
     }
 
+    public boolean removeUser(int userID) {
+        if (findUser(userID) != null) {
+            getUsers().remove(findUser(userID));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // Adds a policy to a given user, if user and policy are valid.
     public boolean addPolicy(int userID, InsurancePolicy policy) {
         if (findUser(userID) != null && findUser(userID).findPolicy(policy.getID()) == null) {
             findUser(userID).addPolicy(policy);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean removePolicy(int userID, int policyID) {
+        if (findUser(userID) != null && findUser(userID).findPolicy(policyID) != null) {
+            findUser(userID).removePolicy(policyID);
             return true;
         } else {
             return false;
@@ -202,9 +227,9 @@ public class InsuranceCompany {
     }
 
     public void reportPaymentPerCity(ArrayList<String> cities, ArrayList<Double> payments) {
-        System.out.printf("%s     %s\n", "City Name", "Total Premium Payment");
+        System.out.printf("%s\t%s\n", "City Name", "Total Premium Payment");
         for (int i = 0; i < cities.size(); i++) {
-            System.out.printf("%s    $%.2f\n", cities.get(i), payments.get(i));
+            System.out.printf("%s\t\t$%.2f\n", cities.get(i), payments.get(i));
         }
     }
 

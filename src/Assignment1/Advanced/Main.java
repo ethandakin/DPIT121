@@ -56,20 +56,23 @@ public class Main {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         System.out.println("1: Test Code");
         System.out.println("2: Create User");
-        System.out.println("3: Create ThirdParty Policy");
-        System.out.println("4: Create Comprehensive Policy");
-        System.out.println("5: Print User Information");
-        System.out.println("6: Filter by Car Model");
-        System.out.println("7: Filter by Expiry Date");
-        System.out.println("8: Update Address");
-        System.out.println("9: Log Out");
-        System.out.print("\nPlease choose an option from 1 to 9: ");
+        System.out.println("3: Remove User");
+        System.out.println("4: Create ThirdParty Policy");
+        System.out.println("5: Create Comprehensive Policy");
+        System.out.println("6: Remove Policy");
+        System.out.println("7: Print User Information");
+        System.out.println("8: Filter by Car Model");
+        System.out.println("9: Filter by Expiry Date");
+        System.out.println("10: Update Address");
+        System.out.println("11: Change Admin Password");
+        System.out.println("12: Log Out");
+        System.out.print("\nPlease choose an option from 1 to 12: ");
     }
     
     public static void adminMenu() {
         int option = 0;
 
-        while (option != 9) {
+        while (option != 12) {
             displayAdminMenu();
             option = Integer.parseInt(scan.nextLine());
 
@@ -81,30 +84,39 @@ public class Main {
                     createUser();
                     break;
                 case 3:
-                    createThirdPartyPolicy();
+                    removeUser();
                     break;
                 case 4:
-                    createComprehensivePolicy();                
+                    createThirdPartyPolicy();
                     break;
                 case 5:
-                    printUserInformation();
+                    createComprehensivePolicy();                
                     break;
                 case 6:
-                    filterByCarModel();
-                    break;
+                    removePolicy();
+                    break;    
                 case 7:
-                    filterByExpiryDate();
+                    printUserInformation();
                     break;
                 case 8:
-                    updateAddress();
+                    filterByCarModel();
                     break;
                 case 9:
+                    filterByExpiryDate();
+                    break;
+                case 10:
+                    updateAddress();
+                    break;
+                case 11:
+                    changeAdminPassword();
+                    break;
+                case 12:
                     break;
                 default:
                     System.out.println("\nPlease enter a valid option\n");
             }
 
-            if (option != 9) {
+            if (option != 12) {
                 System.out.println("\nPress the ENTER key to continue.");
                 scan.nextLine();
             }
@@ -131,21 +143,22 @@ public class Main {
         System.out.println("2: Update Address");
         System.out.println("3: Create ThirdParty Policy");
         System.out.println("4: Create Comprehensive Policy");
-        System.out.println("5: Calculate Total Premium Payments");
-        System.out.println("6: Car Price Rise All");
-        System.out.println("7: Filter by Car Model");
-        System.out.println("8: Filter by Expiry Date");
-        System.out.println("9: Print policies");
-        System.out.println("10: Print user information");
-        System.out.println("11: Print a policy");
-        System.out.println("12: Log Out");
-        System.out.print("\nPlease choose an option from 1 to 12: ");
+        System.out.println("5: Remove Policy");
+        System.out.println("6: Calculate Total Premium Payments");
+        System.out.println("7: Car Price Rise All");
+        System.out.println("8: Filter by Car Model");
+        System.out.println("9: Filter by Expiry Date");
+        System.out.println("10: Print policies");
+        System.out.println("11: Print user information");
+        System.out.println("12: Print a policy");
+        System.out.println("13: Log Out");
+        System.out.print("\nPlease choose an option from 1 to 13: ");
     }
 
     public static void userMenu() {
         int option = 0;
 
-        while (option != 12) {
+        while (option != 13) {
             displayUserMenu();
             option = Integer.parseInt(scan.nextLine());
 
@@ -163,33 +176,36 @@ public class Main {
                     createUserComprehensivePolicy();          
                     break;
                 case 5:
-                    calculateUserTotalPremiumPayments();
+                    removeUserPolicy();
                     break;
                 case 6:
-                    carPriceRiseAllUser();
+                    calculateUserTotalPremiumPayments();
                     break;
                 case 7:
-                    filterByUserCarModel();
+                    carPriceRiseAllUser();
                     break;
                 case 8:
-                    filterByUserExpiryDate();
+                    filterByUserCarModel();
                     break;
                 case 9:
-                    printUserPolicies();
+                    filterByUserExpiryDate();
                     break;
                 case 10:
-                    printUser();
+                    printUserPolicies();
                     break;
                 case 11:
-                    printPolicy();
+                    printUser();
                     break;
                 case 12:
+                    printPolicy();
+                    break;
+                case 13:
                     break;
                 default:
                     System.out.println("\nPlease enter a valid option\n");
             }
 
-            if (option != 12) {
+            if (option != 13) {
                 System.out.println("\nPress the ENTER key to continue.");
                 scan.nextLine();
             }
@@ -272,8 +288,6 @@ public class Main {
         User user1 = new User("Jeremy", 1, new Address(18, "Green St", "Strathfield", "Sydney"));
         User user3 = new User("Lisa", 3, new Address(4, "Louisa St", "Brunswick", "Melbourne"));
 
-        InsuranceCompany company = new InsuranceCompany("Awesome Insurance", "SuperSecretLogin", "ThisIsASafePassword", 100);
-
         company.addUser(user1);
         company.addUser("Thomas", 2, new Address(144, "Brokers Rd", "Mount Pleasant", "Wollongong"));
         company.addUser(user3);
@@ -316,6 +330,19 @@ public class Main {
         } else {
             System.out.print("User creation failed");
         }
+    }
+
+    public static void removeUser() {
+        System.out.print("Please enter the user's userID: ");
+        int userID = Integer.parseInt(scan.nextLine());
+
+        if (company.removeUser(userID) == true) {
+            System.out.printf("User %d successfully removed!", userID);
+        } else {
+            System.out.printf("Could not remove user %d", userID);
+        }
+
+        System.out.println();
     }
 
     public static void createThirdPartyPolicy() {
@@ -415,12 +442,35 @@ public class Main {
         }
     }
 
+    public static void removePolicy() {
+        System.out.print("Please enter the user's userID: ");
+        int userID = Integer.parseInt(scan.nextLine());
+        
+        System.out.print("Please enter the policy ID: ");
+        int policyID = Integer.parseInt(scan.nextLine());
+
+        if (company.findUser(userID).removePolicy(policyID) == true) {
+            System.out.printf("Policy %d removed from user %d successfully!", policyID, userID);
+        } else {
+            System.out.printf("Could not remove policy %d from user %d", policyID, userID);
+        }
+
+        System.out.println();
+    }
+
     public static void printUserInformation() {
         System.out.print("Please enter the user's ID: ");
         int userID = Integer.parseInt(scan.nextLine());    
 
         System.out.print("\n");
-        company.findUser(userID).print();
+        
+        User user = company.findUser(userID);
+
+        if (user != null) {
+            user.print();
+        } else {
+            System.out.printf("User %d does not exist.", userID);
+        }
 
         // TODO
         // Add error handling?
@@ -469,6 +519,15 @@ public class Main {
         String city = scan.nextLine();
 
         company.findUser(userID).setAddress(new Address(streetNum, street, suburb, city));
+    }
+
+    public static void changeAdminPassword() {
+        System.out.print("Please enter the new admin password: ");
+        String adminPassword = scan.nextLine();
+
+        company.setAdminPassword(adminPassword);
+
+        System.out.println("Admin password successfully changed");
     }
 
     // USER MENU METHODS
@@ -580,6 +639,17 @@ public class Main {
             System.out.print("Comprehensive Policy created successfully.");
         } else {
             System.out.print("Comprehensive Policy creation failed");
+        }
+    }
+
+    public static void removeUserPolicy() {
+        System.out.print("Please enter the policy ID: ");
+        int policyID = Integer.parseInt(scan.nextLine());
+        
+        if (user.removePolicy(policyID) == true) {
+            System.out.printf("Policy %d removed from user %d successfully!", policyID, user.getUserID());
+        } else {
+            System.out.printf("Could not remove policy %d from user %d", policyID, user.getUserID());
         }
     }
 

@@ -1,6 +1,12 @@
 package Assignment1.Advanced;
 import java.util.ArrayList;
-import Assignment1.*;
+
+import Assignment1.Address;
+import Assignment1.InsurancePolicy;
+import Assignment1.ComprehensivePolicy;
+import Assignment1.ThirdPartyPolicy;
+import Assignment1.MyDate;
+import Assignment1.Car;
 
 // Ethan Dakin
 // 8209194
@@ -11,11 +17,13 @@ public class User {
     private int userID;
     private Address address;
     protected ArrayList<InsurancePolicy> policies;
+    protected static int userCount = 0;
 
     // Constructor
     public User(String name, int userID, Address address) {
+        userCount++;
         this.name = name;
-        this.userID = userID;
+        this.userID = userCount;
         this.address = address;
         // Create new ArrayList for all the policies this user holds
         this.policies = new ArrayList<InsurancePolicy>();
@@ -56,13 +64,22 @@ public class User {
     }
 
     public void setCity(String city) {
-        this.address.setCity(city);
+        getAddress().setCity(city);
     }
 
     // Add policy to the policies ArrayList if the ID is valid.
     public boolean addPolicy(InsurancePolicy policy) {
         if (findPolicy(policy.getID()) == null) {
-            this.policies.add(policy);
+            getPolicies().add(policy);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean removePolicy(int policyID) {
+        if (findPolicy(policyID) != null) {
+            getPolicies().remove(findPolicy(policyID));
             return true;
         } else {
             return false;
@@ -116,6 +133,30 @@ public class User {
         } else {
             return false;
         }
+    }
+
+    public ArrayList<String> populateDistinctCarModels() {
+
+    }
+
+    public int getTotalCountForCarModel(String carModel) {
+
+    }
+
+    public double getTotalPaymentForCarModel(String carModel) {
+
+    }
+
+    public ArrayList<Integer> getTotalCountPerCarModel(ArrayList<String> carModels) {
+
+    }
+
+    public ArrayList<Double> getTotalPaymentPerCarModel(ArrayList<String> carModels) {
+
+    }
+
+    public void reportPaymentsPerCarModel(ArrayList<String> carModels, ArrayList<Integer> counts, ArrayList<Double> premiumPayments) {
+        
     }
 
     // Print the user, and the user's policies
