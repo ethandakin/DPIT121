@@ -32,7 +32,7 @@ public class User {
     public Address getAddress() {
         return address;
     }
-    
+
     public ArrayList<InsurancePolicy> getPolicies() {
         return policies;
     }
@@ -55,13 +55,13 @@ public class User {
     }
 
     public void setCity(String city) {
-        getAddress().setCity(city);
+        this.address.setCity(city);
     }
 
     // Add policy to the policies ArrayList if the ID is valid.
     public boolean addPolicy(InsurancePolicy policy) {
         if (findPolicy(policy.id) == null) {
-            getPolicies().add(policy);
+            this.policies.add(policy);
             return true;
         } else {
             return false;

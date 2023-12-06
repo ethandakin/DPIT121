@@ -15,6 +15,24 @@ public class ComprehensivePolicy extends InsurancePolicy{
         this.level = level;
     }
 
+    // Accessors
+    public int getDriverAge() {
+        return driverAge;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    // Mutators
+    public void setDriverAge(int driverAge) {
+        this.driverAge = driverAge;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
     // Override calcPayment method
     @Override
     public double calcPayment(double flatRate) {

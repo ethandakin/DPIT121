@@ -1,5 +1,6 @@
-package Lab3;
+package Assignment1.Advanced;
 import java.util.ArrayList;
+import Assignment1.*;
 
 // Ethan Dakin
 // 8209194
@@ -41,6 +42,11 @@ public class InsuranceCompany {
     public int getFlatRate() {
         return flatRate;
     }
+
+    // Mutators
+    protected void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
+    }
     
     // Validate admin function, checks if given username and password match the company username/password.
     public boolean validateAdmin(String username, String password) {
@@ -54,13 +60,15 @@ public class InsuranceCompany {
 
     // Find user method, loops through all users and returns one with a given id, or null.
     public User findUser(int userID) {
-        for (User user: getUsers()) {
+        User foundUser = null;
+
+        for (User user : getUsers()) {
             if (user.getUserID() == userID) {
-                return user;
+                foundUser = user;
             }
         }
 
-        return null;
+        return foundUser;
     }
 
     // Find policy method, finds and returns a policy if user and policy id are found, else returns null.
@@ -92,10 +100,28 @@ public class InsuranceCompany {
         }
     }
 
+    public boolean removeUser(int userID) {
+        if (findUser(userID) != null) {
+            getUsers().remove(findUser(userID));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // Adds a policy to a given user, if user and policy are valid.
     public boolean addPolicy(int userID, InsurancePolicy policy) {
         if (findUser(userID) != null && findUser(userID).findPolicy(policy.getID()) == null) {
             findUser(userID).addPolicy(policy);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean removePolicy(int userID, int policyID) {
+        if (findUser(userID) != null && findUser(userID).findPolicy(policyID) != null) {
+            findUser(userID).removePolicy(policyID);
             return true;
         } else {
             return false;
@@ -164,6 +190,97 @@ public class InsuranceCompany {
         }
 
         return policies;
+    }
+
+    public ArrayList<String> populateDistinctCityNames() {
+        ArrayList<String> cities = new ArrayList<String>();
+
+        for (User user : getUsers()) {
+            if (!cities.contains(user.getAddress().getCity())) {
+                cities.add(user.getAddress().getCity());
+            }
+        } 
+
+        return cities;
+    }
+
+    public double getTotalPaymentForCity(String city) {
+        double price = 0.0;
+
+        for (User user : getUsers()) {
+            if (user.getAddress().getCity().equals(city)) {
+                price += user.calcTotalPremiums(flatRate);
+            }
+        }
+
+        return price;
+    }
+
+    public ArrayList<Double> getTotalPaymentPerCity(ArrayList<String> cities) {
+        ArrayList<Double> prices = new ArrayList<Double>();
+
+        for (String city : cities) {
+            prices.add(getTotalPaymentForCity(city));
+        }
+
+        return prices;
+    }
+
+    public void reportPaymentPerCity(ArrayList<String> cities, ArrayList<Double> payments) {
+        System.out.printf("%s\t%s\n", "City Name", "Total Premium Payment");
+        for (int i = 0; i < cities.size(); i++) {
+            System.out.printf("%-9s\t$%.2f\n", cities.get(i), payments.get(i));
+        }
+    }
+
+
+    public ArrayList<String> populateDistinctCarModels() {
+        ArrayList<String> carModels = new ArrayList<String>();
+
+        for (User user : getUsers()) {
+            ArrayList<String> userCarModels = user.populateDistinctCarModels();
+
+            for (String model : userCarModels) {
+                if (!carModels.contains(model)) {
+                    carModels.add(model);
+                }
+            }
+        }
+
+        return carModels;
+    }
+
+    public ArrayList<Integer> getTotalCountPerCarModel(ArrayList<String> carModels) {
+        ArrayList<Integer> count = new ArrayList<Integer>();
+
+        for (String model : carModels) {
+            for (User user : users) {
+                count.add(user.getTotalCountForCarModel(model));
+            }
+
+        }
+
+        return count;
+    }
+
+    public ArrayList<Double> getTotalPaymentPerCarModel(ArrayList<String> carModels) {
+        ArrayList<Double> payments = new ArrayList<Double>();
+
+        for (String model : carModels) {
+            for (User user : users) {
+                payments.add(user.getTotalPaymentForCarModel(model));
+            }
+
+        }
+
+        return payments;
+    }
+
+    public void reportPaymentsPerCarModel(ArrayList<String> carModels, ArrayList<Integer> counts, ArrayList<Double> premiumPayments) {
+        for (User user : getUsers()) {
+            System.out.printf("User: %d\n", user.getUserID());
+            user.reportPaymentsPerCarModel(carModels, counts, premiumPayments);
+        }
     }
 
     // Filters by car model for a specific user.

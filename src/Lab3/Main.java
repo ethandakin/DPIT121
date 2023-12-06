@@ -91,7 +91,6 @@ public class Main {
         System.out.println("Login successful: " + company.validateAdmin(wrongUsername, wrongPassword));
         System.out.println();
 
-
         // First method, pass the user object through
         company.addUser(user1);
         // Second method, attributes as parameters
@@ -115,8 +114,6 @@ public class Main {
         company.addPolicy(4, thirdPartyPolicy1);
         company.addPolicy(1, thirdPartyPolicy1);
 
-        
-
         System.out.print("Enter UserID: ");
         int userID = Integer.parseInt(scan.nextLine());
         System.out.println();
@@ -136,7 +133,6 @@ public class Main {
 
         company.carPriceRise(0.1);
         company.print();
-
 
         System.out.print("Enter UserID: ");
         int userID3 = Integer.parseInt(scan.nextLine());
@@ -170,7 +166,6 @@ public class Main {
         MyDate expiryDate2 = new MyDate(scan.nextInt(), scan.nextInt(), scan.nextInt());
         scan.nextLine();
         InsurancePolicy.printPolicies(company.filterByExpiryDate(expiryDate2));
-
 
         System.out.print("Enter UserID: ");
         int userID5 = Integer.parseInt(scan.nextLine());

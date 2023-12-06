@@ -1,5 +1,12 @@
-package Lab3;
+package Assignment1.Advanced;
 import java.util.ArrayList;
+
+import Assignment1.Address;
+import Assignment1.InsurancePolicy;
+import Assignment1.ComprehensivePolicy;
+import Assignment1.ThirdPartyPolicy;
+import Assignment1.MyDate;
+import Assignment1.Car;
 
 // Ethan Dakin
 // 8209194
@@ -10,11 +17,13 @@ public class User {
     private int userID;
     private Address address;
     protected ArrayList<InsurancePolicy> policies;
+    protected static int userCount = 0;
 
     // Constructor
     public User(String name, int userID, Address address) {
+        userCount++;
         this.name = name;
-        this.userID = userID;
+        this.userID = userCount;
         this.address = address;
         // Create new ArrayList for all the policies this user holds
         this.policies = new ArrayList<InsurancePolicy>();
@@ -55,13 +64,22 @@ public class User {
     }
 
     public void setCity(String city) {
-        this.address.setCity(city);
+        getAddress().setCity(city);
     }
 
     // Add policy to the policies ArrayList if the ID is valid.
     public boolean addPolicy(InsurancePolicy policy) {
-        if (findPolicy(policy.id) == null) {
-            this.policies.add(policy);
+        if (findPolicy(policy.getID()) == null) {
+            getPolicies().add(policy);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean removePolicy(int policyID) {
+        if (findPolicy(policyID) != null) {
+            getPolicies().remove(findPolicy(policyID));
             return true;
         } else {
             return false;
@@ -71,7 +89,7 @@ public class User {
     // Returns a policy by searching the policies list with int policyID
     public InsurancePolicy findPolicy(int policyID) {
         for (InsurancePolicy policy: getPolicies()) {
-            if (policy.id == policyID) {
+            if (policy.getID() == policyID) {
                 return policy;
             }
         }
@@ -114,6 +132,70 @@ public class User {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public ArrayList<String> populateDistinctCarModels() {
+        ArrayList<String> carModels = new ArrayList<String>();
+
+        for (InsurancePolicy policy : getPolicies()) {
+            if (!carModels.contains(policy.getCar().getModel())) {
+                carModels.add(policy.getCar().getModel());
+            }
+        } 
+
+        return carModels;
+    }
+
+    public int getTotalCountForCarModel(String carModel) {
+        int carModels = 0;
+
+        for (InsurancePolicy policy : getPolicies()) {
+            if (policy.getCar().getModel().equals(carModel)) {
+                carModels++;
+            }
+        } 
+
+        return carModels;
+    }
+
+    public double getTotalPaymentForCarModel(String carModel) {
+        double totalPrice = 0;
+
+        for (InsurancePolicy policy : getPolicies()) {
+            if (policy.getCar().getModel().equals(carModel)) {
+                totalPrice += policy.getCar().getPrice();
+            }
+        } 
+
+        return totalPrice;
+    }
+
+    public ArrayList<Integer> getTotalCountPerCarModel(ArrayList<String> carModels) {
+        ArrayList<Integer> carModelCount = new ArrayList<Integer>();
+
+        for (String model : carModels) {
+            carModelCount.add(getTotalCountForCarModel(model));
+        } 
+
+        return carModelCount;
+    }
+
+    public ArrayList<Double> getTotalPaymentPerCarModel(ArrayList<String> carModels) {
+        ArrayList<Double> totalPayment = new ArrayList<Double>();
+
+        for (String model : carModels) {
+            totalPayment.add(getTotalPaymentForCarModel(model));
+        } 
+
+        return totalPayment;
+    }
+
+    public void reportPaymentsPerCarModel(ArrayList<String> carModels, ArrayList<Integer> counts, ArrayList<Double> premiumPayments) {
+        System.out.printf("%s\t\t%s\t\t%s\n", "Car Model", "Total Premium Payment", "Average Premium Payment");
+
+        for (int i = 0; i < carModels.size(); i++) {
+            System.out.printf("%-9s\t\t$%-20.2f\t\t$%.2f\n", carModels.get(i), premiumPayments.get(i), premiumPayments.get(i) / counts.get(i));
         }
     }
 

@@ -3,9 +3,6 @@ package Assignment1;
 // Ethan Dakin
 // 8209194
 
-// CarTypes enum
-enum CarType {SUV, SED, LUX, HATCH, etc}
-
 public class Car {
     // Attributes
     protected String model;
@@ -63,11 +60,11 @@ public class Car {
     // toString method
     @Override
     public String toString() {
-        return String.format("%s %d %s ($%.2f)", this.model, this.manufacturingYear, this.type, this.price);
+        return String.format("%s %d %s ($%.2f)", getModel(), getManufacturingYear(), getType(), getPrice());
     }
 
     // Print method
     public void print() {
-        System.out.printf("%s %d %s ($%.2f)", this.model, this.manufacturingYear, this.type, this.price);
+        System.out.printf("%s %d %s ($%.2f)", getModel(), getManufacturingYear(), getType(), getPrice());
     }
 }
