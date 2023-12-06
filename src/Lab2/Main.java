@@ -1,5 +1,4 @@
 package Lab2;
-import java.util.Scanner;
 
 // Ethan Dakin
 // 8209194

@@ -229,10 +229,30 @@ public class InsuranceCompany {
     public void reportPaymentPerCity(ArrayList<String> cities, ArrayList<Double> payments) {
         System.out.printf("%s\t%s\n", "City Name", "Total Premium Payment");
         for (int i = 0; i < cities.size(); i++) {
-            System.out.printf("%s\t\t$%.2f\n", cities.get(i), payments.get(i));
+            System.out.printf("%-9s\t$%.2f\n", cities.get(i), payments.get(i));
         }
     }
 
+
+    public ArrayList<String> populateDistinctCarModels() {
+        ArrayList<String> carModels = new ArrayList<String>();
+
+        for (User user : getUsers()) {
+            ArrayList<String> userCarModels = user.populateDistinctCarModels();
+
+            for (String model : userCarModels) {
+                if (!carModels.contains(model)) {
+                    carModels.add(model);
+                }
+            }
+        }
+
+        return carModels;
+    }
+
+    public ArrayList<Integer> getTotalCountPerCarModel(ArrayList<String> carModels) {
+        
+    }
 
     // Filters by car model for a specific user.
     public ArrayList<InsurancePolicy> filterByCarModel(int userID, String carModel) {

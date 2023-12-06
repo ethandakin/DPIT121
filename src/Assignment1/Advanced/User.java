@@ -136,27 +136,67 @@ public class User {
     }
 
     public ArrayList<String> populateDistinctCarModels() {
+        ArrayList<String> carModels = new ArrayList<String>();
 
+        for (InsurancePolicy policy : getPolicies()) {
+            if (!carModels.contains(policy.getCar().getModel())) {
+                carModels.add(policy.getCar().getModel());
+            }
+        } 
+
+        return carModels;
     }
 
     public int getTotalCountForCarModel(String carModel) {
+        int carModels = 0;
 
+        for (InsurancePolicy policy : getPolicies()) {
+            if (policy.getCar().getModel().equals(carModel)) {
+                carModels++;
+            }
+        } 
+
+        return carModels;
     }
 
     public double getTotalPaymentForCarModel(String carModel) {
+        double totalPrice = 0;
 
+        for (InsurancePolicy policy : getPolicies()) {
+            if (policy.getCar().getModel().equals(carModel)) {
+                totalPrice += policy.getCar().getPrice();
+            }
+        } 
+
+        return totalPrice;
     }
 
     public ArrayList<Integer> getTotalCountPerCarModel(ArrayList<String> carModels) {
+        ArrayList<Integer> carModelCount = new ArrayList<Integer>();
 
+        for (String model : carModels) {
+            carModelCount.add(getTotalCountForCarModel(model));
+        } 
+
+        return carModelCount;
     }
 
     public ArrayList<Double> getTotalPaymentPerCarModel(ArrayList<String> carModels) {
+        ArrayList<Double> totalPayment = new ArrayList<Double>();
 
+        for (String model : carModels) {
+            totalPayment.add(getTotalPaymentForCarModel(model));
+        } 
+
+        return totalPayment;
     }
 
     public void reportPaymentsPerCarModel(ArrayList<String> carModels, ArrayList<Integer> counts, ArrayList<Double> premiumPayments) {
-        
+        System.out.printf("%s\t\t%s\t\t%s\n", "Car Model", "Total Premium Payment", "Average Premium Payment");
+
+        for (int i = 0; i < carModels.size(); i++) {
+            System.out.printf("%s\t$%.2f\t$%.2f", carModels.get(i), premiumPayments.get(i), premiumPayments.get(i) / counts.get(i));
+        }
     }
 
     // Print the user, and the user's policies
