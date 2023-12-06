@@ -278,6 +278,9 @@ public class User implements Cloneable, Comparable<User> {
     public ArrayList<InsurancePolicy> sortPoliciesByDate() {
         ArrayList<InsurancePolicy> policies = new ArrayList<InsurancePolicy>();
 
+        for (InsurancePolicy policy : getPolicies()) {
+            policies.add(policy)
+        }
 
         return policies;
     }
