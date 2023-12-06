@@ -195,7 +195,7 @@ public class User {
         System.out.printf("%s\t\t%s\t\t%s\n", "Car Model", "Total Premium Payment", "Average Premium Payment");
 
         for (int i = 0; i < carModels.size(); i++) {
-            System.out.printf("%s\t$%.2f\t$%.2f", carModels.get(i), premiumPayments.get(i), premiumPayments.get(i) / counts.get(i));
+            System.out.printf("%-9s\t\t$%-20.2f\t\t$%.2f\n", carModels.get(i), premiumPayments.get(i), premiumPayments.get(i) / counts.get(i));
         }
     }
 

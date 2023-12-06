@@ -304,6 +304,14 @@ public class Main {
         ArrayList<String> cities = company.populateDistinctCityNames();
         System.out.println(company.getTotalPaymentForCity("Wollongong"));
         company.reportPaymentPerCity(cities, company.getTotalPaymentPerCity(cities));
+
+
+
+        ArrayList<String> cars = company.populateDistinctCarModels();
+        ArrayList<Integer> count = company.getTotalCountPerCarModel(cars);
+        ArrayList<Double> payments = company.getTotalPaymentPerCarModel(cars);
+
+        company.reportPaymentsPerCarModel(cars, count, payments);
     }
 
     public static void createUser() {

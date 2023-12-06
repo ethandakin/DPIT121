@@ -251,7 +251,36 @@ public class InsuranceCompany {
     }
 
     public ArrayList<Integer> getTotalCountPerCarModel(ArrayList<String> carModels) {
-        
+        ArrayList<Integer> count = new ArrayList<Integer>();
+
+        for (String model : carModels) {
+            for (User user : users) {
+                count.add(user.getTotalCountForCarModel(model));
+            }
+
+        }
+
+        return count;
+    }
+
+    public ArrayList<Double> getTotalPaymentPerCarModel(ArrayList<String> carModels) {
+        ArrayList<Double> payments = new ArrayList<Double>();
+
+        for (String model : carModels) {
+            for (User user : users) {
+                payments.add(user.getTotalPaymentForCarModel(model));
+            }
+
+        }
+
+        return payments;
+    }
+
+    public void reportPaymentsPerCarModel(ArrayList<String> carModels, ArrayList<Integer> counts, ArrayList<Double> premiumPayments) {
+        for (User user : getUsers()) {
+            System.out.printf("User: %d\n", user.getUserID());
+            user.reportPaymentsPerCarModel(carModels, counts, premiumPayments);
+        }
     }
 
     // Filters by car model for a specific user.
