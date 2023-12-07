@@ -10,8 +10,8 @@ public class User implements Cloneable, Comparable<User> {
     private String name;
     private int userID;
     private Address address;
-    protected ArrayList<InsurancePolicy> policies;
-    protected static int userCount = 0;
+    private ArrayList<InsurancePolicy> policies;
+    private static int userCount = 0;
 
     // Constructor
     public User(String name, Address address) {
@@ -65,7 +65,11 @@ public class User implements Cloneable, Comparable<User> {
     }
 
     public void setCity(String city) {
-        getAddress().setCity(city);
+        address.setCity(city);
+    }
+
+    public static int getUserCount() {
+        return userCount;
     }
 
     // Add policy to the policies ArrayList if the ID is valid.
@@ -268,20 +272,16 @@ public class User implements Cloneable, Comparable<User> {
 
     @Override
     public int compareTo(User user) {
-        return getAddress().getCity().compareTo(user.getAddress().getCity());
+        return address.getCity().compareTo(user.address.getCity());
     }
 
     public int compareTo1(User user) {
         return (int) (calcTotalPremiums(0)) - (int) (user.calcTotalPremiums(userCount));
     }
 
-    public ArrayList<InsurancePolicy> sortPoliciesByDate() {
-        ArrayList<InsurancePolicy> policies = new ArrayList<InsurancePolicy>();
-
-        for (InsurancePolicy policy : getPolicies()) {
-            policies.add(policy)
-        }
-
-        return policies;
+    public ArrayList<InsurancePolicy> sortPoliciesByDate() throws CloneNotSupportedException {
+        ArrayList<InsurancePolicy> sorted = deepCopyPolicies();
+        Collections.sort(sorted);
+        return sorted;
     }
 }

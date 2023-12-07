@@ -5,9 +5,9 @@ package Lab4;
 
 public class MyDate implements Cloneable, Comparable<MyDate> {
     // Protected attributes for date
-    protected int year;
-    protected int month;
-    protected int day;
+    private int year;
+    private int month;
+    private int day;
 
     // Constructor
     public MyDate(int year, int month, int day) {
@@ -61,15 +61,26 @@ public class MyDate implements Cloneable, Comparable<MyDate> {
     }
 
     @Override
-    public int compareTo(MyDate date) {
-        // yes i know this isnt 100% accurate and i would love to use the default date libraries but if we were doing that this class wouldnt exist?
+    public int compareTo(MyDate other) {
+        if (year > other.getYear()) {
+            return 1;
+        } else if (year < other.getYear()) {
+            return -1;
+        }
 
-        int yearDifference = getYear() - date.getYear();
-        int monthDifference = getMonth() - date.getMonth();
-        int dayDifference = getDay() - date.getDay();
+        if (month > other.getMonth()) {
+            return 1;
+        } else if (month < other.getMonth()) {
+            return -1;
+        }
 
+        if (day > other.getDay()) {
+            return 1;
+        } else if (day < other.getDay()) {
+            return -1;
+        }
 
-        return ((yearDifference * 365) + ((int) ((double) monthDifference * 30.4167)) + (dayDifference));
+        return 0;
     }
 
     // toString method

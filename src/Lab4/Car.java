@@ -5,10 +5,10 @@ package Lab4;
 
 public class Car implements Cloneable {
     // Attributes
-    protected String model;
-    protected CarType type;
-    protected int manufacturingYear;
-    protected double price;
+    private String model;
+    private CarType type;
+    private int manufacturingYear;
+    private double price;
 
     // Constructor
     public Car(String model, CarType type, int manufacturingYear, double price) {
@@ -18,6 +18,7 @@ public class Car implements Cloneable {
         this.price = price;
     }
 
+    // Copy constructor
     public Car(Car car) {
         this.model = car.model;
         this.type = car.type;
@@ -67,12 +68,12 @@ public class Car implements Cloneable {
     // toString method
     @Override
     public String toString() {
-        return String.format("%s %d %s ($%.2f)", getModel(), getManufacturingYear(), getType(), getPrice());
+        return String.format("%s %d %s ($%.2f)", model, manufacturingYear, type, price);
     }
 
     // Print method
     public void print() {
-        System.out.printf("%s %d %s ($%.2f)", getModel(), getManufacturingYear(), getType(), getPrice());
+        System.out.printf("%s %d %s ($%.2f)", model, manufacturingYear, type, price);
     }
 
     @Override

@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public abstract class InsurancePolicy implements Cloneable, Comparable<InsurancePolicy> {
     // Default attributes
-    protected String policyHolderName;
-    protected int id;
-    protected Car car;
-    protected int numberOfClaims;
-    protected MyDate expiryDate;
+    private String policyHolderName;
+    private int id;
+    private Car car;
+    private int numberOfClaims;
+    private MyDate expiryDate;
 
     // Constructor
     public InsurancePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate) {
@@ -190,7 +190,7 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
     }
 
     @Override
-    public int compareTo(InsurancePolicy policy) {
-        return expiryDate.compareTo(policy.getExpiryDate());
+    public int compareTo(InsurancePolicy other) {
+        return expiryDate.compareTo(other.getExpiryDate());
     }
 }

@@ -1,5 +1,6 @@
 package Lab4;
 import java.util.ArrayList;
+import java.util.Collections;
 
 // Ethan Dakin
 // 8209194
@@ -104,7 +105,7 @@ public class InsuranceCompany implements Cloneable {
 
     // Create and add a user to the company if the user id is available.
     public boolean addUser(String name, Address address) {
-        if (findUser(User.userCount + 1) == null) {
+        if (findUser(User.getUserCount() + 1) == null) {
             getUsers().add(new User(name, address));
             return true;
         } else {
@@ -214,6 +215,17 @@ public class InsuranceCompany implements Cloneable {
         } 
 
         return cities;
+    }
+
+    public ArrayList<User> sortUsers() {
+        ArrayList<User> users = new ArrayList<User>();
+
+        for (User user : getUsers()) {
+            users.add(user);
+        }
+
+        Collections.sort(users);
+        return users;
     }
 
     public double getTotalPaymentForCity(String city) {

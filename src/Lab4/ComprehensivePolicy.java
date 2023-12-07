@@ -5,8 +5,8 @@ package Lab4;
 
 public class ComprehensivePolicy extends InsurancePolicy{
     // Default attributes
-    protected int driverAge;
-    protected int level;
+    private int driverAge;
+    private int level;
 
     // Constructor
     public ComprehensivePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, int driverAge, int level) {
@@ -47,7 +47,7 @@ public class ComprehensivePolicy extends InsurancePolicy{
             flatRate += ((30 - driverAge) * 50);
         }
 
-        return super.getCar().getPrice() / 50 + numberOfClaims * 200 + flatRate;
+        return super.getCar().getPrice() / 50 + getNumberOfClaims() * 200 + flatRate;
     }
 
     // toString method

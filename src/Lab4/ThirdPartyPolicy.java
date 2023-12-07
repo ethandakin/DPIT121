@@ -5,7 +5,7 @@ package Lab4;
 
 public class ThirdPartyPolicy extends InsurancePolicy{
     // Attributes
-    protected String comments;
+    private String comments;
 
     // Constructor
     public ThirdPartyPolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) {
@@ -31,7 +31,7 @@ public class ThirdPartyPolicy extends InsurancePolicy{
     // calcPayment method, returns the premium payment for this class
     @Override
     public double calcPayment(double flatRate) {
-        return super.getCar().getPrice() / 100 + numberOfClaims * 200 + flatRate;
+        return super.getCar().getPrice() / 100 + getNumberOfClaims() * 200 + flatRate;
     }
 
     // toString method

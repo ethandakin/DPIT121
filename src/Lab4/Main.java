@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class Main {
     // Attributes for main, basically global values
-    public static Scanner scan;
-    public static InsuranceCompany company;
-    public static User user;
+    protected static Scanner scan;
+    protected static InsuranceCompany company;
+    protected static User user;
 
     public static void main(String[] args) throws CloneNotSupportedException {
         // Initialize the scanner
@@ -300,20 +300,20 @@ public class Main {
         );
 
         User user1 = new User("Jeremy", new Address(18, "Green St", "Strathfield", "Sydney"));
-        User user3 = new User("Lisa", new Address(4, "Louisa St", "Brunswick", "Melbourne"));
+        User user2 = new User("Lisa", new Address(4, "Louisa St", "Brunswick", "Melbourne"));
 
         company.addUser(user1);
         company.addUser("Thomas", new Address(144, "Brokers Rd", "Mount Pleasant", "Wollongong"));
-        company.addUser(user3);
+        company.addUser(user2);
         
-        company.addPolicy(1, thirdPartyPolicy1);
-        company.addPolicy(1, comprehensivePolicy1);
+        company.addPolicy(2, thirdPartyPolicy1);
+        company.addPolicy(2, comprehensivePolicy1);
 
         company.addPolicy(2, thirdPartyPolicy2);
         company.addPolicy(2, comprehensivePolicy2);
 
-        company.addPolicy(3, thirdPartyPolicy3);
-        company.addPolicy(3, comprehensivePolicy3);
+        company.addPolicy(2, thirdPartyPolicy3);
+        company.addPolicy(2, comprehensivePolicy3);
 
 
         ArrayList<InsurancePolicy> shallowCopy = user1.shallowCopyPolicies();
@@ -322,7 +322,54 @@ public class Main {
         user1.getAddress().setCity("New York");
         user1.createComprehensivePolicy("Kanye", 9, new Car(thirdPartyPolicy2.getCar()), 15, new MyDate(2030, 11, 20), 38, 1);
 
+        ArrayList<InsurancePolicy> sortedPolicies = user2.sortPoliciesByDate();
+        /* 
+        System.out.println("SHALLOW COPY: ");
+        for (InsurancePolicy policy : shallowCopy) {
+            policy.print();
+        }
 
+        System.out.println("DEEP COPY: ");
+        for (InsurancePolicy policy : deepCopy) {
+            policy.print();
+        } */
+
+        System.out.println("SORTED: ");
+        for (InsurancePolicy policy : sortedPolicies) {
+            policy.print();
+        }
+
+        /*
+        ArrayList<User> shallowCopyUsers = company.shallowCopyUsers();
+        ArrayList<User> deepCopyUsers = company.deepCopyUsers();
+
+        company.addUser("Test guy", new Address(102, "Bob St", "Suburb", "Wollongong"));
+
+        ArrayList<User> sortedUsers = company.sortUsers();
+
+
+        System.out.println("SHALLOW COPY: ");
+        for (User user : shallowCopyUsers) {
+            user.print();
+        }
+
+        System.out.println("DEEP COPY: ");
+        for (User user : deepCopyUsers) {
+            user.print();
+        }
+
+        System.out.println("SORTED: ");
+        for (User user : sortedUsers) {
+            user.print();
+        }
+
+        InsuranceCompany copiedCompany = company.clone();
+
+        copiedCompany.name = "Cloned company";
+
+        company.print();
+        copiedCompany.print();
+        */
     }
 
     public static void createUser() {

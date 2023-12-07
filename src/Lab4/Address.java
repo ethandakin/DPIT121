@@ -4,13 +4,13 @@ package Lab4;
 // 8209194
 
 public class Address implements Cloneable {
-    // Protected attributes for address
-    protected int streetNum;
-    protected String street;
-    protected String suburb;
-    protected String city;
+    // Attributes
+    private int streetNum;
+    private String street;
+    private String suburb;
+    private String city;
 
-    // Constructor
+    // Constructors
     public Address(int streetNum, String street, String suburb, String city) {
         this.streetNum = streetNum;
         this.street = street;
@@ -18,6 +18,7 @@ public class Address implements Cloneable {
         this.city = city;
     }
     
+    // Copy constructor
     public Address(Address address) {
         this.streetNum = address.streetNum;
         this.street = address.street;
@@ -62,14 +63,15 @@ public class Address implements Cloneable {
     // toString method
     @Override
     public String toString() {
-        return String.format("%d %s, %s, %s", getStreetNum(), getStreet(), getSuburb(), getCity());
+        return String.format("%d %s, %s, %s", streetNum, street, suburb, city);
     }
 
     // Print method
     public void print() {
-        System.out.printf("%d %s, %s, %s", getStreetNum(), getStreet(), getSuburb(), getCity());
+        System.out.printf("%d %s, %s, %s", street, street, suburb, city);
     }
 
+    // Clone method
     @Override
     public Address clone() throws CloneNotSupportedException {
         return (Address) super.clone();
