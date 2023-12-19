@@ -60,9 +60,9 @@ public class Car implements Cloneable {
         this.price = price;
     }
 
-    // Price rise method, increases the price double by (price * (rise + 1))
+    // Price rise method, adds rise to price.
     public void priceRise(double rise) {
-        setPrice(rise += getPrice());
+        price += rise;
     }
 
     // toString method
@@ -76,6 +76,7 @@ public class Car implements Cloneable {
         System.out.printf("%s %d %s ($%.2f)", model, manufacturingYear, type, price);
     }
 
+    // Clone method
     @Override
     public Car clone() throws CloneNotSupportedException {
         return (Car) super.clone();

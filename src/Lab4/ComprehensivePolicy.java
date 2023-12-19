@@ -4,7 +4,7 @@ package Lab4;
 // 8209194
 
 public class ComprehensivePolicy extends InsurancePolicy{
-    // Default attributes
+    // Attributes
     private int driverAge;
     private int level;
 
@@ -15,6 +15,7 @@ public class ComprehensivePolicy extends InsurancePolicy{
         this.level = level;
     }
 
+    // Copy constructor
     public ComprehensivePolicy(ComprehensivePolicy policy) {
         super(policy);
         this.driverAge = policy.driverAge;
@@ -47,19 +48,19 @@ public class ComprehensivePolicy extends InsurancePolicy{
             flatRate += ((30 - driverAge) * 50);
         }
 
-        return super.getCar().getPrice() / 50 + getNumberOfClaims() * 200 + flatRate;
+        return car.getPrice() / 50 + numberOfClaims * 200 + flatRate;
     }
 
     // toString method
     @Override
     public String toString() {
-        return String.format("%s\nDriver Age: %d\nLevel: %d\n", super.toString(), this.driverAge, this.level);
+        return String.format("%s\nDriver Age: %d\nLevel: %d\n", super.toString(), driverAge, level);
     }
 
     // Print method
     @Override
     public void print() {
         super.print();
-        System.out.printf("\nDriver Age: %d\nLevel: %d\n", this.driverAge, this.level);
+        System.out.printf("\nDriver Age: %d\nLevel: %d\n", driverAge, level);
     }
 }

@@ -13,6 +13,7 @@ public class ThirdPartyPolicy extends InsurancePolicy{
         this.comments = comments;
     }
 
+    // Copy constructor
     public ThirdPartyPolicy(ThirdPartyPolicy policy) {
         super(policy);
         this.comments = policy.comments;
@@ -31,19 +32,19 @@ public class ThirdPartyPolicy extends InsurancePolicy{
     // calcPayment method, returns the premium payment for this class
     @Override
     public double calcPayment(double flatRate) {
-        return super.getCar().getPrice() / 100 + getNumberOfClaims() * 200 + flatRate;
+        return car.getPrice() / 100 + numberOfClaims * 200 + flatRate;
     }
 
     // toString method
     @Override
     public String toString() {
-        return String.format("%s\nComments: %s\n", super.toString(), getComments());
+        return String.format("%s\nComments: %s\n", super.toString(), comments);
     }
 
     // Print method
     @Override
     public void print() {
         super.print();
-        System.out.printf("\nComments: %s\n", getComments());
+        System.out.printf("\nComments: %s\n", comments);
     }
 }

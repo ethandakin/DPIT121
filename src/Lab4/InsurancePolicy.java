@@ -5,12 +5,12 @@ import java.util.ArrayList;
 // 8209194
 
 public abstract class InsurancePolicy implements Cloneable, Comparable<InsurancePolicy> {
-    // Default attributes
-    private String policyHolderName;
-    private int id;
-    private Car car;
-    private int numberOfClaims;
-    private MyDate expiryDate;
+    // Attributes
+    protected String policyHolderName;
+    protected int id;
+    protected Car car;
+    protected int numberOfClaims;
+    protected MyDate expiryDate;
 
     // Constructor
     public InsurancePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate) {
@@ -21,6 +21,7 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
         this.expiryDate = expiryDate;
     }
 
+    // Copy constructor
     public InsurancePolicy(InsurancePolicy policy) {
         this.policyHolderName = policy.policyHolderName;
         this.id = policy.id;
@@ -73,8 +74,8 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
 
     // Price rise for car class
     public void carPriceRise(double risePercent) {
-        double rise = getCar().getPrice() * risePercent;
-        getCar().priceRise(rise);
+        double rise = car.getPrice() * risePercent;
+        car.priceRise(rise);
     }
 
     // Abstract method for subclasses
@@ -83,16 +84,17 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
     // Return formatted attributes
     @Override
     public String toString() {
-        return String.format("PolicyID: %d\nHolder: %s\n%s\nNumber of claims: %d\nExpiry date: %s", getID(), getPolicyHolderName(), getCar(), getNumberOfClaims(), getExpiryDate());
+        return String.format("PolicyID: %d\nHolder: %s\n%s\nNumber of claims: %d\nExpiry date: %s", id, policyHolderName, car, numberOfClaims, expiryDate);
     }
 
     // Print out formatted values, with car print in the middle.
     public void print() {
-        System.out.printf("PolicyID: %d\nHolder: %s\n", getID(), getPolicyHolderName());
-        getCar().print();
-        System.out.printf("\nNumber of claims: %d\nExpiry date: %s", getNumberOfClaims(), getExpiryDate());
+        System.out.printf("PolicyID: %d\nHolder: %s\n", id, policyHolderName);
+        car.print();
+        System.out.printf("\nNumber of claims: %d\nExpiry date: %s", numberOfClaims, expiryDate);
     }
 
+    // Clone method
     @Override
     public InsurancePolicy clone() throws CloneNotSupportedException {
         return (InsurancePolicy) super.clone();
@@ -132,12 +134,13 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
         return filteredPolicies;
     }
 
+    // Filter by expiry date
     public static ArrayList<InsurancePolicy> filterByExpiryDate(ArrayList<InsurancePolicy> policies, MyDate date) {
         ArrayList<InsurancePolicy> filteredPolicies = new ArrayList<InsurancePolicy>();
 
         for (InsurancePolicy policy: policies) {
+            // If the policy is expired then add it to the ArrayList.
             if (policy.getExpiryDate().isExpired(date) == true) {
-                 //System.out.print(policy.expiryDate + " " + date);
                 filteredPolicies.add(policy);
             }
         }
@@ -154,6 +157,7 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
         }
     }
 
+    // Print policies and the premium payment for each policy.
     public static void printPoliciesAndPremium(ArrayList<InsurancePolicy> policies, int flatRate) {
         // Loop through policies and call print method on them all.
         for (InsurancePolicy policy: policies) {
@@ -169,6 +173,7 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
         System.out.printf("$%.2f", calcTotalPayments(policies, flatRate));
     }
 
+    // Shallow copy
     public static ArrayList<InsurancePolicy> shallowCopy(ArrayList<InsurancePolicy> policies) {
         ArrayList<InsurancePolicy> copy = new ArrayList<InsurancePolicy>();
 
@@ -179,6 +184,7 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
         return copy;
     }
 
+    // Deep copy (implements clone)
     public static ArrayList<InsurancePolicy> deepCopy(ArrayList<InsurancePolicy> policies) throws CloneNotSupportedException {
         ArrayList<InsurancePolicy> copy = new ArrayList<InsurancePolicy>();
 
@@ -189,6 +195,7 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
         return copy;
     }
 
+    // CompareTo method, compares two dates.
     @Override
     public int compareTo(InsurancePolicy other) {
         return expiryDate.compareTo(other.getExpiryDate());

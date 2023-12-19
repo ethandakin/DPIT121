@@ -48,52 +48,55 @@ public class MyDate implements Cloneable, Comparable<MyDate> {
         this.month = day;
     }
 
+    // Expired method, checks if current date is greater than given date.
     public boolean isExpired(MyDate date) {
-        if (getYear() < date.getYear()) {
+        if (year < date.getYear()) {
             return true;
-        } else if (getYear() <= date.getYear() && getMonth() < date.getMonth()) {
+        } else if (year <= date.getYear() && month < date.getMonth()) {
             return true;
-        } else if (getYear() <= date.getYear() && getMonth() <= date.getMonth() && getDay() <= date.getDay()) {
+        } else if (year <= date.getYear() && month <= date.getMonth() && day <= date.getDay()) {
             return true;
         } else {
             return false;
         }
     }
 
+    // toString method
     @Override
-    public int compareTo(MyDate other) {
-        if (year > other.getYear()) {
+    public String toString() {
+        return String.format("%d/%d/%d", day, month, year);
+    }
+    
+    // Print method
+    public void print() {
+        System.out.printf("%d/%d/%d", day, month, year);
+    }
+
+    // CompareTo method, compares the two dates.
+    @Override
+    public int compareTo(MyDate date) {
+        if (year > date.getYear()) {
             return 1;
-        } else if (year < other.getYear()) {
+        } else if (year < date.getYear()) {
             return -1;
         }
 
-        if (month > other.getMonth()) {
+        if (month > date.getMonth()) {
             return 1;
-        } else if (month < other.getMonth()) {
+        } else if (month < date.getMonth()) {
             return -1;
         }
 
-        if (day > other.getDay()) {
+        if (day > date.getDay()) {
             return 1;
-        } else if (day < other.getDay()) {
+        } else if (day < date.getDay()) {
             return -1;
         }
 
         return 0;
     }
 
-    // toString method
-    @Override
-    public String toString() {
-        return String.format("%d/%d/%d", getDay(), getMonth(), getYear());
-    }
-    
-    // Print method
-    public void print() {
-        System.out.printf("%d/%d/%d", getDay(), getMonth(), getYear());
-    }
-
+    // Clone method
     @Override
     public MyDate clone() throws CloneNotSupportedException {
         return (MyDate) super.clone();
