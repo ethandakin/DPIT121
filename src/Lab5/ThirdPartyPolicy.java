@@ -8,7 +8,7 @@ public class ThirdPartyPolicy extends InsurancePolicy{
     private String comments;
 
     // CONSTRUCTOR //
-    public ThirdPartyPolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) {
+    public ThirdPartyPolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) throws PolicyException {
         super(policyHolderName, id, car, numberOfClaims, expiryDate);
         this.comments = comments;
     }

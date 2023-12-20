@@ -15,12 +15,18 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
     protected MyDate expiryDate;
 
     // CONSTRUCTOR //
-    public InsurancePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate) {
+    public InsurancePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate) throws PolicyException {
         this.policyHolderName = policyHolderName;
-        this.id = id;
         this.car = car;
         this.numberOfClaims = numberOfClaims;
         this.expiryDate = expiryDate;
+        
+        if (id < 3000000 || id > 3999999) {
+            this.id = generateID();
+            throw new PolicyException(this.id);
+        } else {
+            this.id = id;
+        }
     }
 
     // COPY CONSTRUCTOR //
@@ -79,6 +85,10 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
     public void carPriceRise(double risePercent) {
         double rise = car.getPrice() * risePercent;
         car.priceRise(rise);
+    }
+
+    public int generateID() {
+        return 3000000 + (int) (Math.random() * 1000000);
     }
 
     // Abstract method calcPayment

@@ -9,7 +9,7 @@ public class ComprehensivePolicy extends InsurancePolicy{
     private int level;
 
     // CONSTRUCTOR //
-    public ComprehensivePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, int driverAge, int level) {
+    public ComprehensivePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, int driverAge, int level) throws PolicyException {
         super(policyHolderName, id, car, numberOfClaims, expiryDate);
         this.driverAge = driverAge;
         this.level = level;

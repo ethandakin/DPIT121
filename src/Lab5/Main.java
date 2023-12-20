@@ -1,9 +1,6 @@
 package Lab5;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Map;
 
 // Ethan Dakin
 // 8209194
@@ -14,7 +11,7 @@ public class Main {
     protected static InsuranceCompany company;
     protected static User user;
 
-    public static void main(String[] args) throws CloneNotSupportedException {
+    public static void main(String[] args) throws CloneNotSupportedException, PolicyException {
         // Initialize the scanner
         scan = new Scanner(System.in);
         // Create the company
@@ -40,24 +37,16 @@ public class Main {
         System.out.println("1: Admin Login");
         System.out.println("2: User Login");
         System.out.println("3: Exit");
-        
     }
 
     // Base logic for menu prompt, while loop with a switch statement.
-    public static void mainMenu() throws CloneNotSupportedException{
+    public static void mainMenu() throws CloneNotSupportedException, PolicyException {
         int option = 0;
 
         while (option != 3) {
             displayMainMenu();
-
-            do {
-                try {
-                    System.out.print("\nPlease choose an option from 1 to 3: ");
-                    option = Integer.parseInt(scan.nextLine());
-                } catch (NumberFormatException e) {
-                    System.out.print("Incorrect type");
-                }
-            } while (option <= 0);
+            System.out.print("\nPlease choose an option from 1 to 3: ");
+            option = Integer.parseInt(scan.nextLine());
 
             switch(option) {
                 case 1:
@@ -89,15 +78,19 @@ public class Main {
         System.out.println("9: Filter by Expiry Date");
         System.out.println("10: Update Address");
         System.out.println("11: Change Admin Password");
-        System.out.println("12: Log Out");
+        System.out.println("12: Report Payments Per Car Model");
+        System.out.println("13: Report Payments Per City");
+        System.out.println("14: Report All Payments Per Car Model");
+        System.out.println("15: Log Out");
     }
     
     // Switch statement for all admin commands
-    public static void adminMenu() throws CloneNotSupportedException {
+    public static void adminMenu() throws CloneNotSupportedException, PolicyException {
         int option = 0;
 
-        while (option != 12) {
+        while (option != 15) {
             displayAdminMenu();
+            System.out.print("\nPlease choose an option from 1 to 15: ");
             option = Integer.parseInt(scan.nextLine());
 
             switch(option) {
@@ -135,12 +128,21 @@ public class Main {
                     changeAdminPassword();
                     break;
                 case 12:
+                    reportPaymentsPerCarModel();
+                    break;
+                case 13:
+                    reportCities();
+                    break;
+                case 14:
+                    reportAllPaymentsPerCarModel();
+                    break;
+                case 15:
                     break;
                 default:
                     System.out.println("\nPlease enter a valid option\n");
             }
 
-            if (option != 12) {
+            if (option != 15) {
                 System.out.println("\nPress the ENTER key to continue.");
                 scan.nextLine();
             }
@@ -148,7 +150,7 @@ public class Main {
     }
 
     // Admin login
-    public static void adminLogin() throws CloneNotSupportedException {
+    public static void adminLogin() throws CloneNotSupportedException, PolicyException {
         System.out.print("Enter admin username: ");
         String username = scan.nextLine();
         System.out.print("Enter admin password: ");
@@ -180,7 +182,7 @@ public class Main {
         System.out.print("\nPlease choose an option from 1 to 13: ");
     }
 
-    public static void userMenu() {
+    public static void userMenu() throws PolicyException {
         int option = 0;
 
         while (option != 13) {
@@ -237,7 +239,7 @@ public class Main {
         }
     }
 
-    public static void userLogin() {
+    public static void userLogin() throws PolicyException {
         System.out.print("Enter userID: ");
         int userID = Integer.parseInt(scan.nextLine());
 
@@ -250,12 +252,11 @@ public class Main {
         }
     }
 
-    // ADMIN MENU METHODS
-    public static void testCode() throws CloneNotSupportedException {
+    public static void baseCode() throws CloneNotSupportedException, PolicyException {
         // Create all the policies, with attributes described in the constructor.
         ThirdPartyPolicy thirdPartyPolicy1 = new ThirdPartyPolicy(
                 "John",
-                1,
+                3000001,
                 new Car("Subaru", CarType.SED, 2011, 9500),
                 2,
                 new MyDate(2025, 11, 3),
@@ -264,7 +265,7 @@ public class Main {
 
         ComprehensivePolicy comprehensivePolicy1 = new ComprehensivePolicy(
                 "Mike",
-                2,
+                3000002,
                 new Car("Toyota", CarType.HATCH, 2016, 12000),
                 3,
                 new MyDate(2023, 1, 3),
@@ -274,7 +275,7 @@ public class Main {
 
         ThirdPartyPolicy thirdPartyPolicy2 = new ThirdPartyPolicy(
                 "Michelle",
-                3,
+                3000003,
                 new Car("Honda", CarType.SUV, 2014, 10000),
                 8,
                 new MyDate(2019, 7, 25),
@@ -283,7 +284,7 @@ public class Main {
 
         ComprehensivePolicy comprehensivePolicy2 = new ComprehensivePolicy(
                 "Amy",
-                4,
+                3000004,
                 new Car("Tesla", CarType.LUX, 2022, 57000),
                 6,
                 new MyDate(2031, 8, 16),
@@ -293,7 +294,7 @@ public class Main {
 
         ComprehensivePolicy comprehensivePolicy3 = new ComprehensivePolicy(
                 "Tommy",
-                5,
+                3000005,
                 new Car("Tractor", CarType.etc, 1998, 20000),
                 1,
                 new MyDate(2024, 4, 19),
@@ -303,7 +304,7 @@ public class Main {
 
         ThirdPartyPolicy thirdPartyPolicy3 = new ThirdPartyPolicy(
                 "Liam",
-                6,
+                3000006,
                 new Car("Toyota", CarType.HATCH, 2007, 8500),
                 32,
                 new MyDate(2018, 3, 3),
@@ -317,37 +318,29 @@ public class Main {
         company.addUser("Thomas", new Address(144, "Brokers Rd", "Mount Pleasant", "Wollongong"));
         company.addUser(user2);
         
-        company.addPolicy(2, thirdPartyPolicy1);
-        company.addPolicy(2, comprehensivePolicy1);
+        company.addPolicy(1, thirdPartyPolicy1);
+        company.addPolicy(1, comprehensivePolicy1);
 
         company.addPolicy(2, thirdPartyPolicy2);
         company.addPolicy(2, comprehensivePolicy2);
 
-        company.addPolicy(2, thirdPartyPolicy3);
-        company.addPolicy(2, comprehensivePolicy3);
+        company.addPolicy(3, thirdPartyPolicy3);
+        company.addPolicy(3, comprehensivePolicy3);
+    }
+
+    // ADMIN MENU METHODS
+    public static void testCode() throws CloneNotSupportedException, PolicyException {
+        baseCode();
 
 
-        HashMap<String, Integer> cars1 = user2.getTotalCountPerCarModel();
-        HashMap<String, Double> cars = user2.getTotalPremiumPerCarModel(company.getFlatRate());
-
-        user2.reportPaymentsPerCarModel(cars1, cars);
     }
 
     public static void createUser() {
         System.out.print("Please enter the user's name: ");
         String name = scan.nextLine();
 
-        int streetNum = 0;
-        do {
-            try {
-                System.out.print("Please enter the user's street number: ");
-                streetNum = Integer.parseInt(scan.nextLine());
-            // I know the specification asks for an InputMismatchException, however
-            // if you use Integer.parseInt, this is the error it throws.
-            } catch (NumberFormatException e) {
-                System.out.println("Incorrect type");
-            }
-        } while (streetNum <= 0);
+        System.out.print("Please enter the user's street number: ");
+        int streetNum = Integer.parseInt(scan.nextLine());
 
         System.out.print("Please enter the user's street: ");
         String street = scan.nextLine();
@@ -378,7 +371,7 @@ public class Main {
         System.out.println();
     }
 
-    public static void createThirdPartyPolicy() {
+    public static void createThirdPartyPolicy() throws PolicyException {
         System.out.print("Please enter the user's ID: ");
         int userID = Integer.parseInt(scan.nextLine());
 
@@ -418,14 +411,14 @@ public class Main {
         Car car = new Car(model, carType, manufacturingYear, price);
         MyDate expiryDate = new MyDate(year, month, day);
 
-        if (company.createThirdPartyPolicy(userID, name, policyID, car, numberOfClaims, expiryDate, comments)) {
-            System.out.print("ThirdParty Policy created successfully.");
-        } else {
-            System.out.print("ThirdParty Policy creation failed");
-        } 
+        try {
+            company.createThirdPartyPolicy(userID, name, policyID, car, numberOfClaims, expiryDate, comments);
+        } catch (PolicyException e) {
+            System.out.println(e);
+        }
     }
 
-    public static void createComprehensivePolicy() {
+    public static void createComprehensivePolicy() throws PolicyException {
         System.out.print("Please enter the user's ID: ");
         int userID = Integer.parseInt(scan.nextLine());
 
@@ -468,10 +461,10 @@ public class Main {
         Car car = new Car(model, carType, manufacturingYear, price);
         MyDate expiryDate = new MyDate(year, month, day);
 
-        if (company.createComprehensivePolicy(userID, name, policyID, car, numberOfClaims, expiryDate, driverAge, level)) {
-            System.out.print("Comprehensive Policy created successfully.");
-        } else {
-            System.out.print("Comprehensive Policy creation failed");
+        try {
+            company.createComprehensivePolicy(userID, name, policyID, car, numberOfClaims, expiryDate, driverAge, level);
+        } catch (PolicyException e) {
+            System.out.println(e);
         }
     }
 
@@ -563,6 +556,24 @@ public class Main {
         System.out.println("Admin password successfully changed");
     }
 
+    public static void reportPaymentsPerCarModel() {
+        System.out.print("Please enter the user's userID: ");
+        int userID = Integer.parseInt(scan.nextLine());
+        User user = company.findUser(userID);
+
+        if (user != null) {
+            System.out.println(user.reportPaymentsPerCarModel(user.getTotalCountPerCarModel(), user.getTotalPremiumPerCarModel(company.getFlatRate())));
+        }
+    }
+
+    public static void reportCities() {
+        System.out.println(company.reportPaymentPerCity(company.getTotalPremiumPerCity()));
+    }
+
+    public static void reportAllPaymentsPerCarModel() {
+        System.out.println(company.reportPaymentsPerCarModel(company.getTotalCountPerCarModel(), company.getTotalPremiumPerCarModel()));
+    }
+
     // USER MENU METHODS
     public static void updateUserName() {
         System.out.print("Please enter updated name: ");
@@ -584,7 +595,7 @@ public class Main {
         user.setAddress(new Address(streetNum, street, suburb, city));
     }
 
-    public static void createUserThirdPartyPolicy() {
+    public static void createUserThirdPartyPolicy() throws PolicyException {
         System.out.print("Please enter the policy holder's name: ");
         String name = scan.nextLine();
 
@@ -621,14 +632,14 @@ public class Main {
         Car car = new Car(model, carType, manufacturingYear, price);
         MyDate expiryDate = new MyDate(year, month, day);
 
-        if (user.createThirdPartyPolicy(name, policyID, car, numberOfClaims, expiryDate, comments)) {
-            System.out.print("ThirdParty Policy created successfully.");
-        } else {
-            System.out.print("ThirdParty Policy creation failed");
+        try {
+            user.createThirdPartyPolicy(name, policyID, car, numberOfClaims, expiryDate, comments);
+        } catch (PolicyException e) {
+            System.out.println(e);
         }
     }
 
-    public static void createUserComprehensivePolicy() {
+    public static void createUserComprehensivePolicy() throws PolicyException {
         System.out.print("Please enter the policy holder's name: ");
         String name = scan.nextLine();
 
@@ -668,10 +679,10 @@ public class Main {
         Car car = new Car(model, carType, manufacturingYear, price);
         MyDate expiryDate = new MyDate(year, month, day);
 
-        if (user.createComprehensivePolicy(name, policyID, car, numberOfClaims, expiryDate, driverAge, level)) {
-            System.out.print("Comprehensive Policy created successfully.");
-        } else {
-            System.out.print("Comprehensive Policy creation failed");
+        try {
+            user.createComprehensivePolicy(name, policyID, car, numberOfClaims, expiryDate, driverAge, level);
+        } catch (PolicyException e) {
+            System.out.println(e);
         }
     }
 

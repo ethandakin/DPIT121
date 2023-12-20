@@ -117,7 +117,7 @@ public class InsuranceCompany implements Cloneable {
     }
 
     // Creates and adds a third party policy for a given user, if all conditions are met.
-    public boolean createThirdPartyPolicy(int userID, String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) {
+    public boolean createThirdPartyPolicy(int userID, String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) throws PolicyException {
         if (findUser(userID) != null && findUser(userID).createThirdPartyPolicy(policyHolderName, id, car, numberOfClaims, expiryDate, comments) == true) {
             return true;
         } else {
@@ -126,7 +126,7 @@ public class InsuranceCompany implements Cloneable {
     }
 
     // Creates and adds a comprehensive policy for a given user, if all conditions are met.
-    public boolean createComprehensivePolicy(int userID, String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, int driverAge, int level) {
+    public boolean createComprehensivePolicy(int userID, String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, int driverAge, int level) throws PolicyException {
         if (findUser(userID) != null && findUser(userID).createComprehensivePolicy(policyHolderName, id, car, numberOfClaims, expiryDate, driverAge, level) == true) {
             return true;
         } else {
@@ -250,11 +250,13 @@ public class InsuranceCompany implements Cloneable {
         }
     }
 
-    public void reportPaymentPerCity(HashMap<String, Double> cities) {
-        System.out.printf("%s\t%s\n", "City Name", "Total Premium Payment");
+    public String reportPaymentPerCity(HashMap<String, Double> cities) {
+        String value = String.format("%s\t%s\n", "City Name", "Total Premium Payment");
         for (String city : cities.keySet()) {
-            System.out.printf("%-9s\t$%.2f\n", city, cities.get(city));
+            value += String.format("%-9s\t$%.2f\n", city, cities.get(city));
         }
+
+        return value;
     }
 
     // Populate distinct car models
@@ -373,12 +375,14 @@ public class InsuranceCompany implements Cloneable {
         }
     }
 
-    public void reportPaymentsPerCarModel(HashMap<String, Integer> count, HashMap<String, Double> premiumPayments) {
-        System.out.printf("%s\t%s\t%s\n", "Car Model", "Total Premium Payment", "Average Premium Payment");
+    public String reportPaymentsPerCarModel(HashMap<String, Integer> count, HashMap<String, Double> premiumPayments) {
+        String value = String.format("%s\t%s\t%s\n", "Car Model", "Total Premium Payment", "Average Premium Payment");
 
         for (String carModel : count.keySet()) {
-            System.out.printf("%-9s\t$%-20.2f\t$%.2f\n", carModel, premiumPayments.get(carModel), premiumPayments.get(carModel) / count.get(carModel));
+            value += String.format("%-9s\t$%-20.2f\t$%.2f\n", carModel, premiumPayments.get(carModel), premiumPayments.get(carModel) / count.get(carModel));
         }
+
+        return value;
     }
 
     // Filters by car model for a specific user.

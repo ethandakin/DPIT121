@@ -1,7 +1,6 @@
 package Lab5;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Collections;
 
 // Ethan Dakin
@@ -85,7 +84,7 @@ public class User implements Cloneable, Comparable<User> {
     }
 
     // createThirdPartyPolicy method
-    public boolean createThirdPartyPolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) {
+    public boolean createThirdPartyPolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) throws PolicyException {
         if (findPolicy(id) == null) {
             addPolicy(new ThirdPartyPolicy(policyHolderName, id, car, numberOfClaims, expiryDate, comments));
             return true;
@@ -95,7 +94,7 @@ public class User implements Cloneable, Comparable<User> {
     }
 
     // createComprehensivePolicy method
-    public boolean createComprehensivePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, int driverAge, int level) {
+    public boolean createComprehensivePolicy(String policyHolderName, int id, Car car, int numberOfClaims, MyDate expiryDate, int driverAge, int level) throws PolicyException {
         if (findPolicy(id) == null) {
             addPolicy(new ComprehensivePolicy(policyHolderName, id, car, numberOfClaims, expiryDate, driverAge, level));
             return true;
@@ -201,21 +200,25 @@ public class User implements Cloneable, Comparable<User> {
     }
 
     // Report car payments
-    public void reportPaymentsPerCarModel(ArrayList<String> carModels, ArrayList<Integer> counts, ArrayList<Double> premiumPayments) {
-        System.out.printf("%s\t%s\t%s\n", "Car Model", "Total Premium Payment", "Average Premium Payment");
+    public String reportPaymentsPerCarModel(ArrayList<String> carModels, ArrayList<Integer> counts, ArrayList<Double> premiumPayments) {
+        String value = String.format("%s\t%s\t%s\n", "Car Model", "Total Premium Payment", "Average Premium Payment");
 
         for (int i = 0; i < carModels.size(); i++) {
-            System.out.printf("%-9s\t$%-20.2f\t$%.2f\n", carModels.get(i), premiumPayments.get(i), premiumPayments.get(i) / counts.get(i));
+            value +=String.format("%-9s\t$%-20.2f\t$%.2f\n", carModels.get(i), premiumPayments.get(i), premiumPayments.get(i) / counts.get(i));
         }
+
+        return value;
     }
 
     // Report car payments
-    public void reportPaymentsPerCarModel(HashMap<String, Integer> count, HashMap<String, Double> premiumPayments) {
-        System.out.printf("%s\t%s\t%s\n", "Car Model", "Total Premium Payment", "Average Premium Payment");
+    public String reportPaymentsPerCarModel(HashMap<String, Integer> count, HashMap<String, Double> premiumPayments) {
+        String value = String.format("%s\t%s\t%s\n", "Car Model", "Total Premium Payment", "Average Premium Payment");
 
-        for (Map.Entry<String, Integer> entry : count.entrySet()) {
-            System.out.printf("%-9s\t$%-20.2f\t$%.2f\n", entry.getKey(), premiumPayments.get(entry.getKey()), premiumPayments.get(entry.getKey()) / entry.getValue());
+        for (String carModel : count.keySet()) {
+            value += String.format("%-9s\t$%-20.2f\t$%.2f\n", carModel, premiumPayments.get(carModel), premiumPayments.get(carModel) / count.get(carModel));
         }
+
+        return value;
     }
 
     // Shallow copy policies
@@ -232,8 +235,8 @@ public class User implements Cloneable, Comparable<User> {
     public HashMap<Integer, InsurancePolicy> shallowCopyPoliciesHashMap() {
         HashMap<Integer, InsurancePolicy> copy = new HashMap<Integer, InsurancePolicy>();
 
-        for (Map.Entry<Integer, InsurancePolicy> entry : policies.entrySet()) {
-            copy.put(entry.getKey(), entry.getValue());
+        for (int policyID : policies.keySet()) {
+            copy.put(policyID, policies.get(policyID));
         }
 
         return copy;
@@ -253,8 +256,8 @@ public class User implements Cloneable, Comparable<User> {
     public HashMap<Integer, InsurancePolicy> deepCopyPoliciesHashMap() throws CloneNotSupportedException {
         HashMap<Integer, InsurancePolicy> copy = new HashMap<Integer, InsurancePolicy>();
 
-        for (Map.Entry<Integer, InsurancePolicy> entry : policies.entrySet()) {
-            copy.put(entry.getKey(), entry.getValue().clone());
+        for (int policyID : policies.keySet()) {
+            copy.put(policyID, policies.get(policyID).clone());
         }
 
         return copy;
@@ -286,8 +289,8 @@ public class User implements Cloneable, Comparable<User> {
     public static HashMap<Integer, User> shallowCopyHashMap(HashMap<Integer, User> users) {
         HashMap<Integer, User> copy = new HashMap<Integer, User>();
 
-        for (Map.Entry<Integer, User> entry : users.entrySet()) {
-            copy.put(entry.getKey(), entry.getValue());
+        for (int userID : users.keySet()) {
+            copy.put(userID, users.get(userID));
         }
 
         return copy;
