@@ -183,9 +183,10 @@ public class InsuranceCompany implements Cloneable {
     public HashMap<Integer, InsurancePolicy> allPoliciesHashMap() {
         HashMap<Integer, InsurancePolicy> policies = new HashMap<Integer, InsurancePolicy>();
 
-        for (Map.Entry<Integer, User> user : users.entrySet()) {
-            for (Map.Entry<Integer, InsurancePolicy> policy : user.getValue().getPolicies().entrySet()) {
-                policies.put(policy.getKey(), policy.getValue());
+        for (int userID : users.keySet()) {
+            User user = users.get(userID);
+            for (int policyID : user.getPolicies().keySet()) {
+                policies.put(policyID, user.getPolicies().get(policyID));
             }
         }
 
@@ -251,8 +252,8 @@ public class InsuranceCompany implements Cloneable {
 
     public void reportPaymentPerCity(HashMap<String, Double> cities) {
         System.out.printf("%s\t%s\n", "City Name", "Total Premium Payment");
-        for (Map.Entry<String, Double> entry : cities.entrySet()) {
-            System.out.printf("%-9s\t$%.2f\n", entry.getKey(), entry.getValue());
+        for (String city : cities.keySet()) {
+            System.out.printf("%-9s\t$%.2f\n", city, cities.get(city));
         }
     }
 
@@ -291,9 +292,10 @@ public class InsuranceCompany implements Cloneable {
     public HashMap<String, Double> getTotalPremiumPerCity() {
         HashMap<String, Double> cities = new HashMap<String, Double>();
 
-        for (Map.Entry<Integer, User> entry : users.entrySet()) { 
-            String city = entry.getValue().getAddress().getCity();
-            double premium = entry.getValue().calcTotalPremiums(flatRate);
+        for (Integer userID : users.keySet()) { 
+            User user = users.get(userID);
+            String city = user.getAddress().getCity();
+            double premium = user.calcTotalPremiums(flatRate);
 
             if (cities.containsKey(city)) {
                 cities.replace(city, cities.get(city) + premium);
@@ -311,14 +313,13 @@ public class InsuranceCompany implements Cloneable {
         for (User user : users.values()) {
             HashMap<String, Integer> carModels = user.getTotalCountPerCarModel();
 
-            for (Map.Entry<String, Integer> car : carModels.entrySet()) {
-                String key = car.getKey();
-                Integer count = car.getValue();
+            for (String carModel : carModels.keySet()) {
+                int count = carModels.get(carModel);
 
-                if (carCount.containsKey(car.getKey())) {
-                    carCount.replace(key, carCount.get(key) + count);
+                if (carCount.containsKey(carModel)) {
+                    carCount.replace(carModel, carCount.get(carModel) + count);
                 } else {
-                    carCount.put(key, count);
+                    carCount.put(carModel, count);
                 }
             }
         }
@@ -332,14 +333,13 @@ public class InsuranceCompany implements Cloneable {
         for (User user : users.values()) {
             HashMap<String, Double> premiums = user.getTotalPremiumPerCarModel(flatRate);
 
-            for (Map.Entry<String, Double> car : premiums.entrySet()) {
-                String key = car.getKey();
-                double payment = car.getValue();
+            for (String carModel : premiums.keySet()) {
+                double payment = premiums.get(carModel);
 
-                if (premium.containsKey(car.getKey())) {
-                    premium.replace(key, premium.get(key) + payment);
+                if (premium.containsKey(carModel)) {
+                    premium.replace(carModel, premium.get(carModel) + payment);
                 } else {
-                    premium.put(key, payment);
+                    premium.put(carModel, payment);
                 }
             }
         }
@@ -373,11 +373,11 @@ public class InsuranceCompany implements Cloneable {
         }
     }
 
-    public void reportPaymentsPerCarModel() {
+    public void reportPaymentsPerCarModel(HashMap<String, Integer> count, HashMap<String, Double> premiumPayments) {
         System.out.printf("%s\t%s\t%s\n", "Car Model", "Total Premium Payment", "Average Premium Payment");
 
-        for (int i = 0; i < carModels.size(); i++) {
-            System.out.printf("%-9s\t$%-20.2f\t$%.2f\n", carModels.get(i), premiumPayments.get(i), premiumPayments.get(i) / counts.get(i));
+        for (String carModel : count.keySet()) {
+            System.out.printf("%-9s\t$%-20.2f\t$%.2f\n", carModel, premiumPayments.get(carModel), premiumPayments.get(carModel) / count.get(carModel));
         }
     }
 

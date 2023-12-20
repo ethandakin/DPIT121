@@ -2,6 +2,7 @@ package Lab5;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 
 // Ethan Dakin
@@ -26,7 +27,7 @@ public class Main {
         scan.close();
     }
 
-    // UTIL
+    
     // Method to print a bunch of new lines..
     public static void clearScreen() {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -39,7 +40,7 @@ public class Main {
         System.out.println("1: Admin Login");
         System.out.println("2: User Login");
         System.out.println("3: Exit");
-        System.out.print("\nPlease choose an option from 1 to 3: ");
+        
     }
 
     // Base logic for menu prompt, while loop with a switch statement.
@@ -48,7 +49,16 @@ public class Main {
 
         while (option != 3) {
             displayMainMenu();
-            option = Integer.parseInt(scan.nextLine());
+
+            do {
+                try {
+                    System.out.print("\nPlease choose an option from 1 to 3: ");
+                    option = Integer.parseInt(scan.nextLine());
+                } catch (NumberFormatException e) {
+                    System.out.print("Incorrect type");
+                }
+            } while (option <= 0);
+
             switch(option) {
                 case 1:
                     adminLogin();
@@ -80,7 +90,6 @@ public class Main {
         System.out.println("10: Update Address");
         System.out.println("11: Change Admin Password");
         System.out.println("12: Log Out");
-        System.out.print("\nPlease choose an option from 1 to 12: ");
     }
     
     // Switch statement for all admin commands
@@ -328,8 +337,17 @@ public class Main {
         System.out.print("Please enter the user's name: ");
         String name = scan.nextLine();
 
-        System.out.print("Please enter the user's street number: ");
-        int streetNum = Integer.parseInt(scan.nextLine());
+        int streetNum = 0;
+        do {
+            try {
+                System.out.print("Please enter the user's street number: ");
+                streetNum = Integer.parseInt(scan.nextLine());
+            // I know the specification asks for an InputMismatchException, however
+            // if you use Integer.parseInt, this is the error it throws.
+            } catch (NumberFormatException e) {
+                System.out.println("Incorrect type");
+            }
+        } while (streetNum <= 0);
 
         System.out.print("Please enter the user's street: ");
         String street = scan.nextLine();
