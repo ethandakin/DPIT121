@@ -1,5 +1,11 @@
 package Lab6;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.EOFException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
@@ -92,38 +98,138 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
         car.priceRise(rise);
     }
 
-    public static HashMap<Integer, InsurancePolicy> load(String fileName) {
-
-    }
-
-    public static boolean save(HashMap<Integer, InsurancePolicy> policies, String fileName) throws IOException {
-        ObjectOutputStream outputStream = null;
+    public static HashMap<Integer, InsurancePolicy> load(String fileName) throws IOException {
+        HashMap<Integer, InsurancePolicy> policies = new HashMap<Integer, InsurancePolicy>();
+        ObjectInputStream inputStream = null;
 
         try {
-            outputStream = new ObjectOutputStream(Files.newOutputStream(Paths.get(fileName + ".ser")));
+            inputStream = new ObjectInputStream(Files.newInputStream(Paths.get(fileName)));
         } catch (IOException e) {
             System.err.println("Error in creating/opening the file.");
             System.exit(1);
         }
 
         try {
+            while (true) {
+                InsurancePolicy policy = (InsurancePolicy) inputStream.readObject();
+                policies.put(policy.getID(), policy);
+            }
+        } catch (EOFException e) {
+            System.out.println("No new records.");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Wrong class in file");
+        } catch (IOException e) {
+            System.err.println("Error in adding object to file."); 
+            System.exit(1);
+        }
 
+        try {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        } catch (IOException e) {
+            System.err.println("Error in closing the file.");
+            System.exit(1);
+        }
 
+        return policies;
+    }
+
+    public static boolean save(HashMap<Integer, InsurancePolicy> policies, String fileName) throws IOException {
+        ObjectOutputStream outputStream = null;
+        boolean passed = false;
+
+        try {
+            outputStream = new ObjectOutputStream(Files.newOutputStream(Paths.get(fileName)));
+        } catch (IOException e) {
+            System.err.println("Error in creating/opening the file.");
+            System.exit(1);
+        }
+
+        try {
+            for (int policyID : policies.keySet()) {
+                outputStream.writeObject(policies.get(policyID));
+            }
         } catch(IOException e) {
             System.err.println("Error in adding the objects to the file.");
             System.exit(1);
         }
 
         try {
-
+            if (outputStream != null) {
+                outputStream.close();
+                passed = true;
+            }
         } catch(IOException e) {
             System.err.println("Error in closing the file.");
             System.exit(1);
         }
 
-
+        return passed;
     }
 
+    public static boolean saveTextFile(HashMap<Integer, InsurancePolicy> policies, String fileName) throws IOException {
+        BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
+        boolean passed = false;
+
+        for (InsurancePolicy policy : policies.values()) {
+            out.write(policy.toDelimitedString() + "\n");
+        }
+
+        try {
+            out.close();
+            passed = true;
+        } catch(IOException e) {
+            System.err.println("Error in closing the file.");
+            System.exit(1);
+        }
+        
+        return passed;
+    }
+
+    public static HashMap<Integer, InsurancePolicy> loadTextFile(String fileName) throws IOException, PolicyException {
+        BufferedReader in = new BufferedReader(new FileReader(fileName));
+        HashMap<Integer, InsurancePolicy> policies = new HashMap<Integer, InsurancePolicy>();
+        String line = in.readLine();
+
+        while (line != null) {
+            line = line.trim();
+            String[] field = line.split(",");
+
+            String policyHolderName = field[2];
+            int id = Integer.parseInt(field[3]);
+
+            String model = field[5];
+            int manufacturingYear = Integer.parseInt(field[6]);
+            CarType type = CarType.valueOf(field[7]);
+            double price = Double.parseDouble(field[8]);
+
+            Car car = new Car(model, type, manufacturingYear, price);
+
+            int day = Integer.parseInt(field[10]);
+            int month = Integer.parseInt(field[11]);
+            int year = Integer.parseInt(field[12]);
+
+            MyDate date = new MyDate(year, month, day);
+
+            switch (field[0]) {
+                case "ThirdPartyPolicy":
+                    String comments = field[13];
+                    policies.put(id, new ThirdPartyPolicy(policyHolderName, id, car, year, date, comments));
+                    break;
+                case "ComprehensivePolicy":
+                    int driverAge = Integer.parseInt(field[13]);
+                    int level = Integer.parseInt(field[14]);
+
+                    policies.put(id, new ComprehensivePolicy(policyHolderName, id, car, year, date, driverAge, level));
+                    break;
+            }
+
+            line = in.readLine();
+        }
+
+        return policies;
+    }
     public int generateID() {
         return 3000000 + (int) (Math.random() * 1000000);
     }
@@ -305,6 +411,10 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
             System.out.printf("Premium payment: $%.2f\n", policy.calcPayment(flatRate));
             System.out.print("\n");
         }
+    }
+
+    public String toDelimitedString() {
+        return String.format("InsurancePolicy,%s,%d,%s%d,%s", policyHolderName, id, car.toDelimitedString(), numberOfClaims, expiryDate.toDelimitedString());
     }
 
     // Print total premium payment

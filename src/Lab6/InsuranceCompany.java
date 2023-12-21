@@ -1,5 +1,11 @@
 package Lab6;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,9 +40,17 @@ public class InsuranceCompany implements Cloneable, Serializable {
         this.flatRate = company.flatRate;
     }
 
+    public InsuranceCompany() {
+
+    }
+
     // Accessors
     public int getFlatRate() {
         return flatRate;
+    }
+
+    public HashMap<Integer, User> getUsers() {
+        return users;
     }
 
     // Mutators
@@ -290,6 +304,79 @@ public class InsuranceCompany implements Cloneable, Serializable {
         }
 
         return count;
+    }
+
+    public boolean load(String fileName) {
+        ObjectInputStream inputStream = null;
+        boolean passed = false;
+
+        try {
+            inputStream = new ObjectInputStream(Files.newInputStream(Paths.get(fileName)));
+        } catch (IOException e) {
+            System.err.println("Error in creating/opening the file.");
+            System.exit(1);
+        }
+
+        try {
+            while (true) {
+                InsuranceCompany company = (InsuranceCompany) inputStream.readObject();
+                this.name = company.name;
+                this.users = company.users;
+                this.adminUsername = company.adminUsername;
+                this.adminPassword = company.adminPassword;
+                this.flatRate = company.flatRate;
+            }
+        } catch (EOFException e) {
+            System.out.println("No new records.");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Wrong class in file");
+        } catch (IOException e) {
+            System.err.println("Error in adding object to file."); 
+            System.exit(1);
+        }
+
+        try {
+            if (inputStream != null) {
+                inputStream.close();
+                passed = true;
+            }
+        } catch (IOException e) {
+            System.err.println("Error in closing the file.");
+            System.exit(1);
+        }
+
+        return passed;
+    }
+
+    public boolean save(String fileName) {
+        ObjectOutputStream outputStream = null;
+        boolean passed = false;
+
+        try {
+            outputStream = new ObjectOutputStream(Files.newOutputStream(Paths.get(fileName)));
+        } catch (IOException e) {
+            System.err.println("Error in creating/opening the file.");
+            System.exit(1);
+        }
+
+        try {
+            outputStream.writeObject(this);
+        } catch(IOException e) {
+            System.err.println("Error in adding the objects to the file.");
+            System.exit(1);
+        }
+
+        try {
+            if (outputStream != null) {
+                outputStream.close();
+                passed = true;
+            }
+        } catch(IOException e) {
+            System.err.println("Error in closing the file.");
+            System.exit(1);
+        }
+
+        return passed;
     }
 
     public HashMap<String, Double> getTotalPremiumPerCity() {

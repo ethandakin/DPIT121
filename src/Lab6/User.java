@@ -1,5 +1,15 @@
 package Lab6;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.EOFException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
@@ -82,6 +92,76 @@ public class User implements Cloneable, Comparable<User>, Serializable {
         } else {
             return false;
         }
+    }
+
+    public static HashMap<Integer, User> load(String fileName) {
+        HashMap<Integer, User> users = new HashMap<Integer, User>();
+        ObjectInputStream inputStream = null;
+
+        try {
+            inputStream = new ObjectInputStream(Files.newInputStream(Paths.get(fileName)));
+        } catch (IOException e) {
+            System.err.println("Error in creating/opening the file.");
+            System.exit(1);
+        }
+
+        try {
+            while (true) {
+                User user = (User) inputStream.readObject();
+                users.put(user.getUserID(), user);
+            }
+        } catch (EOFException e) {
+            System.out.println("No new records.");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Wrong class in file");
+        } catch (IOException e) {
+            System.err.println("Error in adding object to file."); 
+            System.exit(1);
+        }
+
+        try {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        } catch (IOException e) {
+            System.err.println("Error in closing the file.");
+            System.exit(1);
+        }
+
+        return users;
+    }
+
+    public static boolean save(HashMap<Integer, User> users, String fileName) {
+        ObjectOutputStream outputStream = null;
+        boolean passed = false;
+
+        try {
+            outputStream = new ObjectOutputStream(Files.newOutputStream(Paths.get(fileName)));
+        } catch (IOException e) {
+            System.err.println("Error in creating/opening the file.");
+            System.exit(1);
+        }
+
+        try {
+            for (int userID : users.keySet()) {
+                outputStream.writeObject(users.get(userID));
+            }
+        } catch(IOException e) {
+            System.err.println("Error in adding the objects to the file.");
+            System.exit(1);
+        }
+
+        try {
+            if (outputStream != null) {
+                outputStream.close();
+                passed = true;
+            }
+        } catch(IOException e) {
+            System.err.println("Error in closing the file.");
+            System.exit(1);
+        }
+
+        return passed;
     }
 
     // createThirdPartyPolicy method
@@ -347,6 +427,42 @@ public class User implements Cloneable, Comparable<User>, Serializable {
         return carModelCount;
     }
 
+     public static boolean saveTextFile(HashMap<Integer, User> users, String fileName) throws IOException {
+        BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
+        boolean passed = false;
+
+        for (User user : users.values()) {
+            out.write(user.toDelimitedString() + "\n");
+        }
+
+        try {
+            out.close();
+            passed = true;
+        } catch(IOException e) {
+            System.err.println("Error in closing the file.");
+            System.exit(1);
+        }
+        
+        return passed;
+    }
+
+    public static HashMap<Integer, User> loadTextFile(String fileName) throws IOException, PolicyException {
+        BufferedReader in = new BufferedReader(new FileReader(fileName));
+        HashMap<Integer, User> users = new HashMap<Integer, User>();
+        String line = in.readLine();
+
+        while (line != null) {
+            line = line.trim();
+            String[] field = line.split("~");
+
+            
+
+            line = in.readLine();
+        }
+
+        return users;
+    }
+
     public HashMap<String, Double> getTotalPremiumPerCarModel(int flatRate) {
         HashMap<String, Double> premiums = new HashMap<String, Double>();
 
@@ -383,6 +499,16 @@ public class User implements Cloneable, Comparable<User>, Serializable {
             policiesString += String.format("%s\n", policy);
         }
         return String.format("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", userID, name, address) + policiesString;
+    }
+
+    public String toDelimitedString() {
+        String delimitedString = String.format("User~%s~%d~%s~Policies~", name, userID, address.toDelimitedString());
+
+        for (InsurancePolicy policy : policies.values()) {
+            delimitedString += policy.toDelimitedString() + ",";
+        }
+
+        return delimitedString;
     }
 
     // compareTo method

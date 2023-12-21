@@ -1,0 +1,6 @@
+ComprehensivePolicy,InsurancePolicy,Tommy,3000005,Car,Tractor,1998,etc,20000.0000001,MyDate,19,4,2024,8,2
+ComprehensivePolicy,InsurancePolicy,Amy,3000004,Car,Tesla,2022,LUX,57000.0000006,MyDate,16,8,2031,56,14
+ThirdPartyPolicy,InsurancePolicy,Liam,3000006,Car,Toyota,2007,HATCH,8500.00000032,MyDate,3,3,2018,Tax fraud
+ThirdPartyPolicy,InsurancePolicy,John,3000001,Car,Subaru,2011,SED,9500.0000002,MyDate,3,11,2025,Got flattened by an 18 wheeler
+ThirdPartyPolicy,InsurancePolicy,Michelle,3000003,Car,Honda,2014,SUV,10000.0000008,MyDate,25,7,2019,Boom
+ComprehensivePolicy,InsurancePolicy,Mike,3000002,Car,Toyota,2016,HATCH,12000.0000003,MyDate,3,1,2023,37,6

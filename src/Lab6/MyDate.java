@@ -69,6 +69,12 @@ public class MyDate implements Cloneable, Comparable<MyDate>, Serializable {
     public String toString() {
         return String.format("%d/%d/%d", day, month, year);
     }
+
+    public String toDelimitedString() {
+        return String.format("MyDate,%d,%d,%d", day, month, year);
+    }
+
+    
     
     // Print method
     public void print() {

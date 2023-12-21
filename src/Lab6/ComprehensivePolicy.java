@@ -57,6 +57,11 @@ public class ComprehensivePolicy extends InsurancePolicy {
         return String.format("%s\nDriver Age: %d\nLevel: %d\n", super.toString(), driverAge, level);
     }
 
+    @Override
+    public String toDelimitedString() {
+        return String.format("ComprehensivePolicy,%s,%d,%d", super.toDelimitedString(), driverAge, level);
+    }
+
     // Print method
     @Override
     public void print() {

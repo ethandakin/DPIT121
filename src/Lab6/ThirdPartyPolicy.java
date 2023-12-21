@@ -42,6 +42,11 @@ public class ThirdPartyPolicy extends InsurancePolicy {
         return String.format("%s\nComments: %s\n", super.toString(), comments);
     }
 
+    @Override
+    public String toDelimitedString() {
+        return String.format("ThirdPartyPolicy,%s,%s", super.toDelimitedString(), comments);
+    }
+
     // Print method
     @Override
     public void print() {

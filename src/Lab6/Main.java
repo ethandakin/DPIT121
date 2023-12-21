@@ -1,6 +1,8 @@
 package Lab6;
 import java.util.Scanner;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // Ethan Dakin
 // 8209194
@@ -11,7 +13,7 @@ public class Main {
     protected static InsuranceCompany company;
     protected static User user;
 
-    public static void main(String[] args) throws CloneNotSupportedException, PolicyException {
+    public static void main(String[] args) throws CloneNotSupportedException, PolicyException, IOException {
         // Initialize the scanner
         scan = new Scanner(System.in);
         // Create the company
@@ -40,7 +42,7 @@ public class Main {
     }
 
     // Base logic for menu prompt, while loop with a switch statement.
-    public static void mainMenu() throws CloneNotSupportedException, PolicyException {
+    public static void mainMenu() throws CloneNotSupportedException, PolicyException, IOException {
         int option = 0;
 
         while (option != 3) {
@@ -85,7 +87,7 @@ public class Main {
     }
     
     // Switch statement for all admin commands
-    public static void adminMenu() throws CloneNotSupportedException, PolicyException {
+    public static void adminMenu() throws CloneNotSupportedException, PolicyException, IOException {
         int option = 0;
 
         while (option != 15) {
@@ -150,7 +152,7 @@ public class Main {
     }
 
     // Admin login
-    public static void adminLogin() throws CloneNotSupportedException, PolicyException {
+    public static void adminLogin() throws CloneNotSupportedException, PolicyException, IOException {
         System.out.print("Enter admin username: ");
         String username = scan.nextLine();
         System.out.print("Enter admin password: ");
@@ -252,7 +254,7 @@ public class Main {
         }
     }
 
-    public static void baseCode() throws CloneNotSupportedException, PolicyException {
+    public static void baseCode() throws CloneNotSupportedException, PolicyException, IOException {
         // Create all the policies, with attributes described in the constructor.
         ThirdPartyPolicy thirdPartyPolicy1 = new ThirdPartyPolicy(
                 "John",
@@ -326,10 +328,19 @@ public class Main {
 
         company.addPolicy(3, thirdPartyPolicy3);
         company.addPolicy(3, comprehensivePolicy3);
+
+        InsurancePolicy.saveTextFile(company.allPoliciesHashMap(), "policies.txt");
+
+        HashMap<Integer, InsurancePolicy> policies = InsurancePolicy.loadTextFile("policies.txt");
+
+        //InsurancePolicy.printPolicies(policies);
+
+        User.saveTextFile(company.getUsers(), "users.txt");
+
     }
 
     // ADMIN MENU METHODS
-    public static void testCode() throws CloneNotSupportedException, PolicyException {
+    public static void testCode() throws CloneNotSupportedException, PolicyException, IOException {
         baseCode();
 
 
