@@ -1,5 +1,9 @@
 package Lab6;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.EOFException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -39,6 +43,7 @@ public class InsuranceCompany implements Cloneable, Serializable {
         this.adminPassword = company.adminPassword;
         this.flatRate = company.flatRate;
     }
+
 
     public InsuranceCompany() {
 
@@ -584,4 +589,65 @@ public class InsuranceCompany implements Cloneable, Serializable {
     public InsuranceCompany clone() throws CloneNotSupportedException {
         return (InsuranceCompany) super.clone();
     }
+
+    public String toDelimitedString() {
+        String delimitedString = String.format("%s#%s#%s#%d#Users#", name, adminUsername, adminPassword, flatRate);
+
+        for (User user : users.values()) {
+            delimitedString += user.toDelimitedString() + "#";
+        }
+
+        return delimitedString;
+    }
+
+    public boolean loadTextFile(String fileName) throws IOException, PolicyException {
+        BufferedReader in = new BufferedReader(new FileReader(fileName));
+        boolean passed = false;
+        String line = in.readLine();
+        String[] field = line.split("#");
+
+        name = field[0];
+        adminUsername = field[1];
+        adminPassword = field[2];
+        flatRate = Integer.parseInt(field[3]);
+
+        users = new HashMap<Integer, User>();
+
+        for (int i = 5; i < field.length; i++) {
+            String[] userField = field[i].split("~");
+
+            users.put(Integer.parseInt(userField[2]), User.loadUserFromTextFile(userField));
+        }
+
+        try {
+            in.close();
+            passed = true;
+        } catch (IOException e) {
+            System.err.println("Error in closing the file.");
+            System.exit(1);
+        }
+
+        return passed;
+    }
+
+    public boolean saveTextFile(String fileName) throws IOException {
+        BufferedWriter out = new BufferedWriter(new FileWriter(fileName));
+        boolean passed = false;
+
+        out.write(toDelimitedString());
+
+        try {
+            out.close();
+            passed = true;
+        } catch(IOException e) {
+            System.err.println("Error in closing the file.");
+            System.exit(1);
+        }
+        
+        return passed;
+    }
+
+
+
+
 }

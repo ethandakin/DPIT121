@@ -83,16 +83,20 @@ public class Main {
         System.out.println("12: Report Payments Per Car Model");
         System.out.println("13: Report Payments Per City");
         System.out.println("14: Report All Payments Per Car Model");
-        System.out.println("15: Log Out");
+        System.out.println("15: Save Binary File");
+        System.out.println("16: Load Binary File");
+        System.out.println("17: Save Text File");
+        System.out.println("18: Load Text File");
+        System.out.println("19: Log Out");
     }
     
     // Switch statement for all admin commands
     public static void adminMenu() throws CloneNotSupportedException, PolicyException, IOException {
         int option = 0;
 
-        while (option != 15) {
+        while (option != 19) {
             displayAdminMenu();
-            System.out.print("\nPlease choose an option from 1 to 15: ");
+            System.out.print("\nPlease choose an option from 1 to 19: ");
             option = Integer.parseInt(scan.nextLine());
 
             switch(option) {
@@ -139,12 +143,24 @@ public class Main {
                     reportAllPaymentsPerCarModel();
                     break;
                 case 15:
+                    saveBinaryFile();
+                    break;
+                case 16:
+                    loadBinaryFile();
+                    break;
+                case 17:
+                    saveTextFile();
+                    break;
+                case 18:
+                    loadTextFile();
+                    break;
+                case 19:
                     break;
                 default:
                     System.out.println("\nPlease enter a valid option\n");
             }
 
-            if (option != 15) {
+            if (option != 19) {
                 System.out.println("\nPress the ENTER key to continue.");
                 scan.nextLine();
             }
@@ -328,22 +344,33 @@ public class Main {
 
         company.addPolicy(3, thirdPartyPolicy3);
         company.addPolicy(3, comprehensivePolicy3);
-
-        InsurancePolicy.saveTextFile(company.allPoliciesHashMap(), "policies.txt");
-
-        HashMap<Integer, InsurancePolicy> policies = InsurancePolicy.loadTextFile("policies.txt");
-
-        //InsurancePolicy.printPolicies(policies);
-
-        User.saveTextFile(company.getUsers(), "users.txt");
-
     }
 
     // ADMIN MENU METHODS
     public static void testCode() throws CloneNotSupportedException, PolicyException, IOException {
         baseCode();
 
+        InsurancePolicy.saveTextFile(company.allPoliciesHashMap(), "policies.txt");
+        InsurancePolicy.save(company.allPoliciesHashMap(), "policies.ser");
+        HashMap<Integer, InsurancePolicy> policies = InsurancePolicy.loadTextFile("policies.txt");
+        InsurancePolicy.printPolicies(policies);
+        User.saveTextFile(company.getUsers(), "users.txt");
+        User.save(company.getUsers(), "users.ser");
 
+        HashMap<Integer, User> users = User.loadTextFile("users.txt");
+
+        for (User user : users.values()) {
+            user.print();
+        } 
+
+        company.saveTextFile("company.txt");
+        company.save("company.ser");
+        InsuranceCompany testCompany = new InsuranceCompany();
+        testCompany.loadTextFile("company.txt");
+
+        System.out.print(testCompany);
+
+        
     }
 
     public static void createUser() {
@@ -584,6 +611,52 @@ public class Main {
     public static void reportAllPaymentsPerCarModel() {
         System.out.println(company.reportPaymentsPerCarModel(company.getTotalCountPerCarModel(), company.getTotalPremiumPerCarModel()));
     }
+
+    public static void saveBinaryFile() {
+        System.out.print("Please enter the file name: ");
+        String fileName = scan.nextLine();
+    
+        if (company.save(fileName)) {
+            System.out.println("Successfully saved company to binary file: " + fileName);
+        } else {
+            System.out.println("Unable to save company to binary file: " + fileName);
+        }
+    }
+
+    public static void loadBinaryFile() {
+        System.out.print("Please enter the file name: ");
+        String fileName = scan.nextLine();
+    
+        if (company.load(fileName)) {
+            System.out.println("Successfully loaded company from binary file: " + fileName);
+        } else {
+            System.out.println("Unable to load company from binary file: " + fileName);
+        }
+    }
+
+    public static void saveTextFile() throws IOException {
+        System.out.print("Please enter the file name: ");
+        String fileName = scan.nextLine();
+    
+        if (company.saveTextFile(fileName)) {
+            System.out.println("Successfully saved company to text file: " + fileName);
+        } else {
+            System.out.println("Unable to save company to text file: " + fileName);
+        }
+    }
+
+    public static void loadTextFile() throws IOException, PolicyException {
+        System.out.print("Please enter the file name: ");
+        String fileName = scan.nextLine();
+    
+        if (company.loadTextFile(fileName)) {
+            System.out.println("Successfully loaded company from text file: " + fileName);
+        } else {
+            System.out.println("Unable to load company from text file: " + fileName);
+        }
+    }
+
+
 
     // USER MENU METHODS
     public static void updateUserName() {

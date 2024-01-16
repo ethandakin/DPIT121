@@ -74,7 +74,7 @@ public class Car implements Cloneable, Serializable {
     }
 
     public String toDelimitedString() {
-        return String.format("Car,%s,%d,%s,%f", model, manufacturingYear, type, price);
+        return String.format("%s,%s,%d,%f", model, type, manufacturingYear, price);
     }
 
     // Print method

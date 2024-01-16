@@ -69,7 +69,7 @@ public class Address implements Cloneable, Serializable {
     }
 
     public String toDelimitedString() {
-        return String.format("Address,%d,%s,%s,%s", streetNum, street, suburb, city);
+        return String.format("%d,%s,%s,%s", streetNum, street, suburb, city);
     }
 
     // Print method

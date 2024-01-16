@@ -43,6 +43,10 @@ public class User implements Cloneable, Comparable<User>, Serializable {
     }
 
     // ACCESSORS //
+    public String getName() {
+        return name;
+    }
+
     public int getUserID() {
         return userID;
     }
@@ -446,18 +450,53 @@ public class User implements Cloneable, Comparable<User>, Serializable {
         return passed;
     }
 
+    public static User loadUserFromTextFile(String[] field) throws PolicyException {
+        String userName = field[1];
+        int userID = Integer.parseInt(field[2]);
+
+        String[] addressField = field[3].split(",");
+        int streetNum = Integer.parseInt(addressField[0]);
+        String street = addressField[1];
+        String suburb = addressField[2];
+        String city = addressField[3];
+
+        Address address = new Address(streetNum, street, suburb, city);
+
+        HashMap<Integer, InsurancePolicy> policies = new HashMap<Integer, InsurancePolicy>();
+
+        for (int i = 5; i < field.length; i++) {
+            String[] policyField = field[i].split(",");
+
+            policies.put(Integer.parseInt(policyField[2]), InsurancePolicy.loadInsurancePolicyFromTextFile(policyField));
+        }
+
+        User user = new User(userName, address);
+        user.userID = userID;
+        user.policies = policies;
+        
+        return user;
+    }
+
     public static HashMap<Integer, User> loadTextFile(String fileName) throws IOException, PolicyException {
         BufferedReader in = new BufferedReader(new FileReader(fileName));
         HashMap<Integer, User> users = new HashMap<Integer, User>();
         String line = in.readLine();
 
+        
         while (line != null) {
             line = line.trim();
             String[] field = line.split("~");
 
+            users.put(Integer.parseInt(field[2]), loadUserFromTextFile(field));
             
-
             line = in.readLine();
+        }
+
+        try {
+            in.close();
+        } catch (IOException e) {
+            System.err.println("Error in closing the file.");
+            System.exit(1);
         }
 
         return users;
@@ -505,7 +544,7 @@ public class User implements Cloneable, Comparable<User>, Serializable {
         String delimitedString = String.format("User~%s~%d~%s~Policies~", name, userID, address.toDelimitedString());
 
         for (InsurancePolicy policy : policies.values()) {
-            delimitedString += policy.toDelimitedString() + ",";
+            delimitedString += policy.toDelimitedString() + "~";
         }
 
         return delimitedString;
@@ -517,10 +556,12 @@ public class User implements Cloneable, Comparable<User>, Serializable {
         return address.getCity().compareTo(user.address.getCity());
     }
 
+    /* 
     // Secondary compareTo method
     public int compareTo1(User user) {
         return (int) (calcTotalPremiums(0)) - (int) (user.calcTotalPremiums(userCount));
     }
+    */
 
     // Clone method
     @Override 

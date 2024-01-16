@@ -31,6 +31,8 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
         this.car = car;
         this.numberOfClaims = numberOfClaims;
         this.expiryDate = expiryDate;
+
+        
         
         if (id < 3000000 || id > 3999999) {
             this.id = generateID();
@@ -187,6 +189,39 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
         return passed;
     }
 
+    public static InsurancePolicy loadInsurancePolicyFromTextFile(String[] field) throws PolicyException {
+        String type = field[0];
+
+        String policyHolderName = field[1];
+        int id = Integer.parseInt(field[2]);
+
+        String model = field[3];
+        CarType carType = CarType.valueOf(field[4]);
+        int manufacturingYear = Integer.parseInt(field[5]);
+        double price = Double.parseDouble(field[6]);
+
+        Car car = new Car(model, carType, manufacturingYear, price);
+
+        int numberOfClaims = Integer.parseInt(field[7]);
+
+        int day = Integer.parseInt(field[8]);
+        int month = Integer.parseInt(field[9]);
+        int year = Integer.parseInt(field[10]);
+
+        MyDate date = new MyDate(year, month, day);
+
+        if (type.equals("ThirdPartyPolicy")) {
+            String comments = field[11];
+            return new ThirdPartyPolicy(policyHolderName, id, car, numberOfClaims, date, comments);
+        } else if (type.equals("ComprehensivePolicy")) {
+            int driverAge = Integer.parseInt(field[11]);
+            int level = Integer.parseInt(field[12]);
+            return new ComprehensivePolicy(policyHolderName, id, car, numberOfClaims, date, driverAge, level);
+        }
+
+        return null;
+    }
+
     public static HashMap<Integer, InsurancePolicy> loadTextFile(String fileName) throws IOException, PolicyException {
         BufferedReader in = new BufferedReader(new FileReader(fileName));
         HashMap<Integer, InsurancePolicy> policies = new HashMap<Integer, InsurancePolicy>();
@@ -196,36 +231,16 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
             line = line.trim();
             String[] field = line.split(",");
 
-            String policyHolderName = field[2];
-            int id = Integer.parseInt(field[3]);
-
-            String model = field[5];
-            int manufacturingYear = Integer.parseInt(field[6]);
-            CarType type = CarType.valueOf(field[7]);
-            double price = Double.parseDouble(field[8]);
-
-            Car car = new Car(model, type, manufacturingYear, price);
-
-            int day = Integer.parseInt(field[10]);
-            int month = Integer.parseInt(field[11]);
-            int year = Integer.parseInt(field[12]);
-
-            MyDate date = new MyDate(year, month, day);
-
-            switch (field[0]) {
-                case "ThirdPartyPolicy":
-                    String comments = field[13];
-                    policies.put(id, new ThirdPartyPolicy(policyHolderName, id, car, year, date, comments));
-                    break;
-                case "ComprehensivePolicy":
-                    int driverAge = Integer.parseInt(field[13]);
-                    int level = Integer.parseInt(field[14]);
-
-                    policies.put(id, new ComprehensivePolicy(policyHolderName, id, car, year, date, driverAge, level));
-                    break;
-            }
+            policies.put(Integer.parseInt(field[2]), loadInsurancePolicyFromTextFile(field));
 
             line = in.readLine();
+        }
+
+        try {
+            in.close();
+        } catch(IOException e) {
+            System.err.println("Error in closing the file.");
+            System.exit(1);
         }
 
         return policies;
@@ -414,7 +429,7 @@ public abstract class InsurancePolicy implements Cloneable, Comparable<Insurance
     }
 
     public String toDelimitedString() {
-        return String.format("InsurancePolicy,%s,%d,%s%d,%s", policyHolderName, id, car.toDelimitedString(), numberOfClaims, expiryDate.toDelimitedString());
+        return String.format("%s,%d,%s,%d,%s", policyHolderName, id, car.toDelimitedString(), numberOfClaims, expiryDate.toDelimitedString());
     }
 
     // Print total premium payment
