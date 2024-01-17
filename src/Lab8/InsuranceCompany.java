@@ -378,6 +378,11 @@ public class InsuranceCompany implements Cloneable, Serializable {
     }
 
     public HashMap<String, Double> getTotalPremiumPerCity() {
+        
+
+
+
+
         HashMap<String, Double> cities = new HashMap<String, Double>();
 
         for (Integer userID : users.keySet()) { 
