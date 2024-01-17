@@ -1,4 +1,4 @@
-package Assignment2;
+package Lab8;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.EOFException;
@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 import java.util.Collections;
 
 // Ethan Dakin
@@ -20,17 +21,15 @@ import java.util.Collections;
 public class User implements Cloneable, Comparable<User>, Serializable {
     // ATTRIBUTES //
     private String name;
-    private String password;
     private int userID;
     private Address address;
     private HashMap<Integer, InsurancePolicy> policies;
     private static int userCount = 0;
 
     // CONSTRUCTOR //
-    public User(String name, String password, Address address) {
+    public User(String name, Address address) {
         userCount++;
         this.name = name;
-        this.password = password;
         this.userID = userCount;
         this.address = address;
         this.policies = new HashMap<Integer, InsurancePolicy>();
@@ -39,7 +38,6 @@ public class User implements Cloneable, Comparable<User>, Serializable {
     // COPY CONSTRUCTOR //
     public User(User user) {
         this.name = user.name;
-        this.password = user.password;
         this.userID = user.userID;
         this.address = user.address;
         this.policies = user.policies;
@@ -48,10 +46,6 @@ public class User implements Cloneable, Comparable<User>, Serializable {
     // ACCESSORS //
     public String getName() {
         return name;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public int getUserID() {
@@ -357,24 +351,12 @@ public class User implements Cloneable, Comparable<User>, Serializable {
 
     // Static shallowCopy for a list of users
     public static ArrayList<User> shallowCopy(ArrayList<User> users) {
-        ArrayList<User> copy = new ArrayList<User>();
-
-        for (User user : users) {
-            copy.add(user);
-        }
-
-        return copy;
+        return (ArrayList<User>) users.stream().collect(Collectors.toList());
     }
 
     // Static shallowCopy for a list of users
     public static ArrayList<User> shallowCopy(HashMap<Integer, User> users) {
-        ArrayList<User> copy = new ArrayList<User>();
-
-        for (User user : users.values()) {
-            copy.add(user);
-        }
-
-        return copy;
+        return (ArrayList<User>) users.values().stream().collect(Collectors.toList());
     }
 
     // Static shallowCopy for a list of users
@@ -390,13 +372,13 @@ public class User implements Cloneable, Comparable<User>, Serializable {
 
     // Static deepCopy for a list of users.
     public static ArrayList<User> deepCopy(ArrayList<User> users) throws CloneNotSupportedException {
-        ArrayList<User> copy = new ArrayList<User>();
-
-        for (User user : users) {
-            copy.add(user.clone());
-        }
-
-        return copy;
+        return (ArrayList<User>) users.stream().map(x -> {
+            try {
+                return x.clone();
+            } catch (CloneNotSupportedException e) {
+                return null;
+            }
+        }).collect(Collectors.toList());
     }
 
     // Static deepCopy for a list of users.
@@ -459,10 +441,9 @@ public class User implements Cloneable, Comparable<User>, Serializable {
 
     public static User loadUserFromTextFile(String[] field) throws PolicyException {
         String userName = field[1];
-        String password = field[2];
-        int userID = Integer.parseInt(field[3]);
+        int userID = Integer.parseInt(field[2]);
 
-        String[] addressField = field[4].split(",");
+        String[] addressField = field[3].split(",");
         int streetNum = Integer.parseInt(addressField[0]);
         String street = addressField[1];
         String suburb = addressField[2];
@@ -472,13 +453,13 @@ public class User implements Cloneable, Comparable<User>, Serializable {
 
         HashMap<Integer, InsurancePolicy> policies = new HashMap<Integer, InsurancePolicy>();
 
-        for (int i = 6; i < field.length; i++) {
+        for (int i = 5; i < field.length; i++) {
             String[] policyField = field[i].split(",");
 
             policies.put(Integer.parseInt(policyField[2]), InsurancePolicy.loadInsurancePolicyFromTextFile(policyField));
         }
 
-        User user = new User(userName, password, address);
+        User user = new User(userName, address);
         user.userID = userID;
         user.policies = policies;
         
@@ -495,7 +476,7 @@ public class User implements Cloneable, Comparable<User>, Serializable {
             line = line.trim();
             String[] field = line.split("~");
 
-            users.put(Integer.parseInt(field[3]), loadUserFromTextFile(field));
+            users.put(Integer.parseInt(field[2]), loadUserFromTextFile(field));
             
             line = in.readLine();
         }
@@ -534,7 +515,7 @@ public class User implements Cloneable, Comparable<User>, Serializable {
 
     // Print method
     public void print() {
-        System.out.printf("UserID: %d\nName: %s\nPassword: %s\nAddress: %s\nPolicies: \n\n", userID, name, password, address);
+        System.out.printf("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", userID, name, address);
         InsurancePolicy.printPolicies(policies);
     }
 
@@ -545,11 +526,11 @@ public class User implements Cloneable, Comparable<User>, Serializable {
         for (InsurancePolicy policy : policies.values()) {
             policiesString += String.format("%s\n", policy);
         }
-        return String.format("UserID: %d\nName: %s\nPassword: %s\nAddress: %s\nPolicies: \n\n", userID, name, password, address) + policiesString;
+        return String.format("UserID: %d\nName: %s\nAddress: %s\nPolicies: \n\n", userID, name, address) + policiesString;
     }
 
     public String toDelimitedString() {
-        String delimitedString = String.format("User~%s~%s~%d~%s~Policies~", name, password, userID, address.toDelimitedString());
+        String delimitedString = String.format("User~%s~%d~%s~Policies~", name, userID, address.toDelimitedString());
 
         for (InsurancePolicy policy : policies.values()) {
             delimitedString += policy.toDelimitedString() + "~";
@@ -564,10 +545,12 @@ public class User implements Cloneable, Comparable<User>, Serializable {
         return address.getCity().compareTo(user.address.getCity());
     }
 
+    /* 
     // Secondary compareTo method
     public int compareTo1(User user) {
         return (int) (calcTotalPremiums(0)) - (int) (user.calcTotalPremiums(userCount));
     }
+    */
 
     // Clone method
     @Override 

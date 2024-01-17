@@ -1,4 +1,4 @@
-package Assignment2;
+package Lab8;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.EOFException;
@@ -12,9 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 // Ethan Dakin
 // 8209194
@@ -45,11 +45,6 @@ public class InsuranceCompany implements Cloneable, Serializable {
         this.flatRate = company.flatRate;
     }
 
-    public class SortUserByPremium implements Comparator<User> {
-        public int compare(User a, User b) {
-            return (int) (a.calcTotalPremiums(flatRate)) - (int) (b.calcTotalPremiums(flatRate));
-        }
-    }
 
     public InsuranceCompany() {
 
@@ -105,9 +100,9 @@ public class InsuranceCompany implements Cloneable, Serializable {
     }
 
     // Create and add a user to the company if the user id is available.
-    public boolean addUser(String name, String password, Address address) {
+    public boolean addUser(String name, Address address) {
         if (findUser(User.getUserCount() + 1) == null) {
-            users.put(User.getUserCount() + 1, new User(name, password, address));
+            users.put(User.getUserCount() + 1, new User(name, address));
             return true;
         } else {
             return false;
@@ -167,13 +162,7 @@ public class InsuranceCompany implements Cloneable, Serializable {
     
     // Calculates the total payments for all users.
     public double calcTotalPayments() {
-        double result = 0.0;
-
-        for (User user : users.values()) {
-            result += user.calcTotalPremiums(flatRate);
-        }
-
-        return result;
+        return users.values().stream().mapToDouble(x -> x.calcTotalPremiums(flatRate)).sum();
     }
 
     // Rises all car prices for a given user.
@@ -188,9 +177,7 @@ public class InsuranceCompany implements Cloneable, Serializable {
 
     // Rises all car prices for all users.
     public void carPriceRise(double risePercent) {
-        for (User user : users.values()) {
-            user.carPriceRiseAll(risePercent);
-        }
+        users.values().forEach(x -> x.carPriceRiseAll(risePercent));
     }
 
     // Returns an array list of all policies in the company.
@@ -506,13 +493,9 @@ public class InsuranceCompany implements Cloneable, Serializable {
 
     // Filters by car model for all users.
     public ArrayList<InsurancePolicy> filterByCarModel(String carModel) {
-        ArrayList<InsurancePolicy> policies = new ArrayList<InsurancePolicy>();
-
-        for (User user : users.values()) {
-            policies.addAll(user.filterByCarModel(carModel));
-        }
-
-        return policies;
+        return (ArrayList<InsurancePolicy>) users.values().stream()
+        .flatMap(x -> x.filterByCarModel(carModel).stream())
+        .collect(Collectors.toList());
     }
 
     public HashMap<Integer, InsurancePolicy> filterByCarModelHashMap(String carModel) {
@@ -622,7 +605,7 @@ public class InsuranceCompany implements Cloneable, Serializable {
         for (int i = 5; i < field.length; i++) {
             String[] userField = field[i].split("~");
 
-            users.put(Integer.parseInt(userField[3]), User.loadUserFromTextFile(userField));
+            users.put(Integer.parseInt(userField[2]), User.loadUserFromTextFile(userField));
         }
 
         try {
@@ -653,43 +636,7 @@ public class InsuranceCompany implements Cloneable, Serializable {
         return passed;
     }
 
-    public ArrayList<User> sortUsersByPremium() {
-        ArrayList<User> usersList = new ArrayList<User>();
-        usersList.addAll(users.values());
 
-        Collections.sort(usersList, new SortUserByPremium());
 
-        return usersList;
-    }
-
-    public HashMap<String, ArrayList<User>> getUsersPerCity() {
-        HashMap<String, ArrayList<User>> cities = new HashMap<String, ArrayList<User>>();
-
-        for (String city : populateDistinctCityNames()) {
-            cities.put(city, new ArrayList<User>());
-            
-            for (User user : users.values()) {
-                if (user.getAddress().getCity().equals(city)) {
-                    cities.get(city).add(user);
-                }
-            }
-        }
-
-        return cities;
-    }
-
-    public HashMap<String, ArrayList<InsurancePolicy>> filterPoliciesByExpiryDate(MyDate expiryDate) {
-        HashMap<String, ArrayList<InsurancePolicy>> filteredPolicies = new HashMap<String, ArrayList<InsurancePolicy>>();
-
-        for (User user : users.values()) {
-            ArrayList<InsurancePolicy> expiredPolicies = user.filterByExpiryDate(expiryDate);
-
-            if (expiredPolicies.size() > 0) {
-                filteredPolicies.put(user.getName(), expiredPolicies);
-            }
-        }
-
-        return filteredPolicies;
-    }
 
 }

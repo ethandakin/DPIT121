@@ -1,4 +1,4 @@
-package Assignment2;
+package Lab8;
 import java.util.Scanner;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -273,7 +273,7 @@ public class Main {
     public static void baseCode() throws CloneNotSupportedException, PolicyException, IOException {
         // Create all the policies, with attributes described in the constructor.
         ThirdPartyPolicy thirdPartyPolicy1 = new ThirdPartyPolicy(
-                "John White",
+                "John",
                 3000001,
                 new Car("Subaru", CarType.SED, 2011, 9500),
                 2,
@@ -282,7 +282,7 @@ public class Main {
         );
 
         ComprehensivePolicy comprehensivePolicy1 = new ComprehensivePolicy(
-                "Mike Smith",
+                "Mike",
                 3000002,
                 new Car("Toyota", CarType.HATCH, 2016, 12000),
                 3,
@@ -292,7 +292,7 @@ public class Main {
         );
 
         ThirdPartyPolicy thirdPartyPolicy2 = new ThirdPartyPolicy(
-                "Michelle Obama",
+                "Michelle",
                 3000003,
                 new Car("Honda", CarType.SUV, 2014, 10000),
                 8,
@@ -301,7 +301,7 @@ public class Main {
         );
 
         ComprehensivePolicy comprehensivePolicy2 = new ComprehensivePolicy(
-                "Amy Surname",
+                "Amy",
                 3000004,
                 new Car("Tesla", CarType.LUX, 2022, 57000),
                 6,
@@ -311,7 +311,7 @@ public class Main {
         );
 
         ComprehensivePolicy comprehensivePolicy3 = new ComprehensivePolicy(
-                "Tommy Thompson",
+                "Tommy",
                 3000005,
                 new Car("Tractor", CarType.etc, 1998, 20000),
                 1,
@@ -321,7 +321,7 @@ public class Main {
         );
 
         ThirdPartyPolicy thirdPartyPolicy3 = new ThirdPartyPolicy(
-                "Liam Barnett",
+                "Liam",
                 3000006,
                 new Car("Toyota", CarType.HATCH, 2007, 8500),
                 32,
@@ -329,11 +329,11 @@ public class Main {
                 "Tax fraud"
         );
 
-        User user1 = new User("Jeremy", "password", new Address(18, "Green St", "Strathfield", "Sydney"));
-        User user2 = new User("Lisa", "123456", new Address(4, "Louisa St", "Brunswick", "Melbourne"));
+        User user1 = new User("Jeremy", new Address(18, "Green St", "Strathfield", "Sydney"));
+        User user2 = new User("Lisa", new Address(4, "Louisa St", "Brunswick", "Melbourne"));
 
         company.addUser(user1);
-        company.addUser("Thomas", "admin", new Address(144, "Brokers Rd", "Mount Pleasant", "Wollongong"));
+        company.addUser("Thomas", new Address(144, "Brokers Rd", "Mount Pleasant", "Wollongong"));
         company.addUser(user2);
         
         company.addPolicy(1, thirdPartyPolicy1);
@@ -350,35 +350,15 @@ public class Main {
     public static void testCode() throws CloneNotSupportedException, PolicyException, IOException {
         baseCode();
 
-        InsurancePolicy.saveTextFile(company.allPoliciesHashMap(), "policies.txt");
-        InsurancePolicy.save(company.allPoliciesHashMap(), "policies.ser");
-        HashMap<Integer, InsurancePolicy> policies = InsurancePolicy.loadTextFile("policies.txt");
-        InsurancePolicy.printPolicies(policies);
-        User.saveTextFile(company.getUsers(), "users.txt");
-        User.save(company.getUsers(), "users.ser");
+        ArrayList<InsurancePolicy> copy = InsurancePolicy.deepCopy(company.allPolicies());
 
-        HashMap<Integer, User> users = User.loadTextFile("users.txt");
-
-        for (User user : users.values()) {
-            user.print();
-        } 
-
-        company.saveTextFile("company.txt");
-        company.save("company.ser");
-        InsuranceCompany testCompany = new InsuranceCompany();
-        testCompany.loadTextFile("company.txt");
-
-        System.out.print(testCompany);
-
+        copy.forEach(System.out::println);
         
     }
 
     public static void createUser() {
         System.out.print("Please enter the user's name: ");
         String name = scan.nextLine();
-
-        System.out.print("Please enter the user's password: ");
-        String password = scan.nextLine();
 
         System.out.print("Please enter the user's street number: ");
         int streetNum = Integer.parseInt(scan.nextLine());
@@ -392,7 +372,7 @@ public class Main {
         System.out.print("Please enter the user's city: ");
         String city = scan.nextLine();
 
-        if (company.addUser(name, password, new Address(streetNum, street, suburb, city))) {
+        if (company.addUser(name, new Address(streetNum, street, suburb, city))) {
             System.out.print("User created successfully.");
         } else {
             System.out.print("User creation failed");
