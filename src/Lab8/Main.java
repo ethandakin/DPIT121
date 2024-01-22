@@ -1,8 +1,10 @@
 package Lab8;
 import java.util.Scanner;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Comparator;
 
 // Ethan Dakin
 // 8209194
@@ -275,8 +277,8 @@ public class Main {
         ThirdPartyPolicy thirdPartyPolicy1 = new ThirdPartyPolicy(
                 "John",
                 3000001,
-                new Car("Subaru", CarType.SED, 2011, 9500),
-                2,
+                new Car("Subaru", CarType.SED, 2011, 2000),
+                1,
                 new MyDate(2025, 11, 3),
                 "Got flattened by an 18 wheeler"
         );
@@ -346,13 +348,63 @@ public class Main {
         company.addPolicy(3, comprehensivePolicy3);
     }
 
+    public static ArrayList<InsurancePolicy> filterPolicies(ArrayList<InsurancePolicy> policies, Predicate<InsurancePolicy> criteria) {
+        return (ArrayList<InsurancePolicy>) policies.stream()
+                .filter(criteria)
+                .collect(Collectors.toList()); 
+    }
+
     // ADMIN MENU METHODS
     public static void testCode() throws CloneNotSupportedException, PolicyException, IOException {
         baseCode();
 
-        ArrayList<InsurancePolicy> copy = InsurancePolicy.deepCopy(company.allPolicies());
+        ArrayList<InsurancePolicy> policies = company.allPolicies();
 
-        copy.forEach(System.out::println);
+        System.out.printf("A. Find all policies with the name 'John' and display the policy information\n");
+        policies.stream()
+        .filter(x -> x.getPolicyHolderName().contains("John"))
+        .forEach(System.out::println);
+
+        System.out.printf("B. Find all policies with the name 'John' and disply total premiums\n");
+        policies.stream()
+        .filter(x -> x.getPolicyHolderName().contains("John"))
+        .forEach(x -> System.out.printf("$%.2f\n", x.calcPayment(company.getFlatRate())));
+
+        Predicate<InsurancePolicy> p1 = x -> x.calcPayment(company.getFlatRate()) >= 200 && x.calcPayment(company.getFlatRate()) <= 500;
+
+        System.out.printf("C. Find the first policy between $200 and $500:\n"); 
+        policies.stream()
+        .filter(p1)
+        .findFirst()
+        .ifPresent(x -> {
+            System.out.printf("%s %d $%.2f\n", x.getPolicyHolderName(), x.getID(), x.calcPayment(company.getFlatRate()));
+        });
+
+        System.out.printf("D. Find all policies between $200 and $500\n");
+        policies.stream()
+        .filter(p1)
+        .sorted(Comparator.comparing(InsurancePolicy::getID))
+        .forEach(x -> System.out.printf("%s %d $%.2f\n", x.getPolicyHolderName(), x.getID(), x.calcPayment(company.getFlatRate())));
+
+        System.out.printf("E. Calculate the total premium for all policies between $200 and $500\n$%.2f\n", 
+        policies.stream()
+        .filter(p1)
+        .mapToDouble(x->x.calcPayment(company.getFlatRate()))
+        .sum());
+
+
+        Predicate<InsurancePolicy> c1 = x -> x.getPolicyHolderName().equals("John Smith");
+        ArrayList<InsurancePolicy> policies1 = filterPolicies(policies, c1);
+        InsurancePolicy.printPolicies(policies1);
+
+        InsurancePolicy.printPolicies(filterPolicies(policies, x -> x.getExpiryDate().getYear()==2020));
+        InsurancePolicy.printPolicies(filterPolicies(policies, x -> x.getCar().getModel().contains("Toyota")));
+
+        Predicate<InsurancePolicy> c2 = x -> x.getCar().getType() == CarType.LUX;
+        ArrayList<InsurancePolicy> policies3 = filterPolicies(policies, c2);
+        policies3.stream()
+        .sorted(Comparator.comparing(x -> x.getCar().getPrice()))
+        .forEach(System.out::println);
         
     }
 
@@ -518,9 +570,6 @@ public class Main {
         } else {
             System.out.printf("User %d does not exist.", userID);
         }
-
-        // TODO
-        // Add error handling?
     }
 
     public static void filterByCarModel() {

@@ -378,15 +378,17 @@ public class InsuranceCompany implements Cloneable, Serializable {
     }
 
     public HashMap<String, Double> getTotalPremiumPerCity() {
-        
+        return (HashMap<String, Double>) users.values().stream()
+        .collect(Collectors.groupingBy(
+            x -> x.getAddress().getCity(),
+            Collectors.summingDouble(x -> x.calcTotalPremiums(flatRate))
+        ));
+    }
 
-
-
-
+    public HashMap<String, Double> getOldTotalPremiumPerCity() {
         HashMap<String, Double> cities = new HashMap<String, Double>();
 
-        for (Integer userID : users.keySet()) { 
-            User user = users.get(userID);
+        for (User user : users.values()) { 
             String city = user.getAddress().getCity();
             double premium = user.calcTotalPremiums(flatRate);
 
